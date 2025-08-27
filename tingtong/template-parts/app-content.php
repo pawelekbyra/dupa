@@ -29,9 +29,9 @@
                     <p class="secret-subtitle" data-translate-key="secretSubtitle">Log in to unlock</p>
                 </div>
                 <div class="topbar" data-view="default">
-                    <button class="topbar-icon-btn hamburger-icon" data-action="toggle-main-menu" data-translate-aria-label="menuAriaLabel" aria-label="Menu"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"></path></svg></button>
+                    <button class="topbar-icon-btn hamburger-icon" data-action="toggle-main-menu" data-translate-aria-label="menuAriaLabel" aria-label="Menu"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
                     <button class="topbar-central-trigger" data-action="toggle-login-panel"><div class="central-text-wrapper"><span class="topbar-text"></span></div></button>
-                    <button class="topbar-icon-btn notification-bell" data-action="toggle-notifications" data-translate-aria-label="notificationAriaLabel" aria-label="Powiadomienia"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M13.73 21a2 2 0 0 1-3.46 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><div class="notification-dot"></div></button>
+                    <button class="topbar-icon-btn notification-bell" data-action="toggle-notifications" data-translate-aria-label="notificationAriaLabel" aria-label="Powiadomienia"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="notification-dot"></div></button>
                 </div>
                 <div class="login-panel" aria-hidden="true">
                     <!-- Content will be injected by JS -->
@@ -46,22 +46,20 @@
                         <div class="plus" aria-hidden="true">+</div>
                     </div>
                     <button class="icon-button like-button" data-action="toggle-like" data-like-id="" data-translate-alert="likeAlert" data-translate-aria-label="likeAriaLabel" aria-label="Polub" aria-pressed="false">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                         <div class="like-count icon-label">0</div>
                     </button>
                     <button class="icon-button commentsButton" data-action="open-comments-modal" aria-controls="commentsModal" data-translate-aria-label="commentsAriaLabel" aria-label="Komentarze">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
-                        </svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     </button>
-                    <button class="icon-button shareButton" data-action="share" data-translate-title="shareTitle" data-translate-aria-label="shareAriaLabel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l6 6-6 6M21 11H9a6 6 0 0 0-6 6" /></svg><div class="icon-label" data-translate-key="shareText">Szeruj</div></button>
-                    <button class="icon-button infoButton" data-action="open-info-modal" data-translate-title="infoTitle" data-translate-aria-label="infoAriaLabel" aria-controls="infoModal"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" /><line x1="8" y1="8" x2="16" y2="8" /><line x1="8" y1="12" x2="16" y2="12" /><line x1="8" y1="16" x2="12" y2="16" /></svg><div class="icon-label" data-translate-key="infoText">Info</div></button>
+                    <button class="icon-button shareButton" data-action="share" data-translate-title="shareTitle" data-translate-aria-label="shareAriaLabel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><div class="icon-label" data-translate-key="shareText">Szeruj</div></button>
+                    <button class="icon-button infoButton" data-action="open-info-modal" data-translate-title="infoTitle" data-translate-aria-label="infoAriaLabel" aria-controls="infoModal"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><div class="icon-label" data-translate-key="infoText">Info</div></button>
                     <button class="icon-button languageButton" data-action="toggle-language" data-translate-aria-label="languageAriaLabel">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="1.5" fill="none"/><line x1="2" y1="12" x2="22" y2="12" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="4" ry="10" stroke-width="1.5" fill="none"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                         <div class="icon-label language-label" data-translate-key="languageText">PL</div>
                     </button>
                     <button class="icon-button tipButton" data-action="show-tip-jar" data-translate-title="tipTitle" data-translate-aria-label="tipAriaLabel">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="12" rx="2" ry="2" /><path d="M2 10h20" /><circle cx="18" cy="13" r="2" /></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
                         <div class="icon-label" data-translate-key="tipText">Napiwek</div>
                     </button>
                 </div>
@@ -87,7 +85,7 @@
     </div>
     <div id="infoModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="infoTitle" aria-hidden="true">
         <div class="modal-content" tabindex="-1">
-            <button class="modal-close-btn" data-translate-aria-label="closeInfoAriaLabel" aria-label="Zamknij informacje">&times;</button>
+            <button class="modal-close-btn" data-translate-aria-label="closeInfoAriaLabel" aria-label="Zamknij informacje"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentcolor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             <h2 id="infoTitle" data-translate-key="infoModalTitle">Informacje</h2>
             <div class="modal-body">
                 <p data-translate-key="infoModalBodyP1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.</p>
@@ -102,10 +100,40 @@
     </div>
     <div id="commentsModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="commentsTitle" aria-hidden="true">
         <div class="modal-content" tabindex="-1">
-            <button class="modal-close-btn" data-translate-aria-label="closeCommentsAriaLabel" aria-label="Zamknij komentarze">&times;</button>
+            <button class="modal-close-btn" data-translate-aria-label="closeCommentsAriaLabel" aria-label="Zamknij komentarze"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentcolor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             <h2 id="commentsTitle" data-translate-key="commentsModalTitle">Komentarze</h2>
-            <div class="modal-body">
-                <!-- celowo pusto — przygotowane pod późniejszą integrację -->
+            <div class="modal-body" id="commentsContainer">
+                <div class="skeleton-loader">
+                    <div class="skeleton-comment">
+                        <div class="skeleton-avatar"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-line" style="width: 30%;"></div>
+                            <div class="skeleton-line" style="width: 80%;"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton-comment">
+                        <div class="skeleton-avatar"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-line" style="width: 40%;"></div>
+                            <div class="skeleton-line" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton-comment">
+                        <div class="skeleton-avatar"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-line" style="width: 25%;"></div>
+                            <div class="skeleton-line" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton-comment">
+                        <div class="skeleton-avatar"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-line" style="width: 35%;"></div>
+                            <div class="skeleton-line" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Real comments will be injected here by JS -->
             </div>
         </div>
     </div>
@@ -114,7 +142,7 @@
     <div class="notification-popup" id="notificationPopup" role="dialog" aria-modal="true" aria-labelledby="notification-title">
         <div class="notification-header">
             <strong id="notification-title" data-translate-key="notificationsTitle">Powiadomienia</strong>
-            <button data-action="close-notifications" data-translate-aria-label="closeNotificationsAriaLabel" aria-label="Zamknij powiadomienia">&times;</button>
+            <button data-action="close-notifications" data-translate-aria-label="closeNotificationsAriaLabel" aria-label="Zamknij powiadomienia"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentcolor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         <ul class="notification-list">
             <div class="notification-empty-state hidden-by-js">
