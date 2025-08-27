@@ -739,6 +739,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newCount = newLikedState ? currentCount + 1 : Math.max(0, currentCount - 1);
 
                 // Optimistic UI update
+                Utils.vibrateTry(newLikedState ? 40 : 20); // Stronger vibrate for like, softer for unlike
                 slideData.isLiked = newLikedState;
                 slideData.initialLikes = newCount;
                 UI.applyLikeStateToDom(slideData.likeId, newLikedState, newCount);
@@ -796,28 +797,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     const section = actionTarget.closest('.webyx-section');
 
                     switch (action) {
-                        case 'toggle-like': handleLikeToggle(actionTarget); break;
-                        case 'share': handleShare(actionTarget); break;
-                        case 'toggle-language': handleLanguageToggle(); break;
-                        case 'open-comments-modal': UI.openModal(UI.DOM.commentsModal); break;
-                        case 'open-info-modal': UI.openModal(UI.DOM.infoModal); break;
+                        case 'toggle-like': handleLikeToggle(actionTarget); break; // Has its own vibrate on error
+                        case 'share': Utils.vibrateTry(25); handleShare(actionTarget); break;
+                        case 'toggle-language': Utils.vibrateTry(); handleLanguageToggle(); break;
+                        case 'open-comments-modal': Utils.vibrateTry(); UI.openModal(UI.DOM.commentsModal); break;
+                        case 'open-info-modal': Utils.vibrateTry(); UI.openModal(UI.DOM.infoModal); break;
                         case 'open-account-modal':
                             if(section) section.querySelector('.logged-in-menu').classList.remove('active');
+                            Utils.vibrateTry();
                             AccountPanel.openAccountModal();
                             break;
                         case 'close-account-modal':
+                            Utils.vibrateTry();
                             AccountPanel.closeAccountModal();
                             break;
-                        case 'logout': e.preventDefault(); handleLogout(actionTarget); break;
+                        case 'logout': e.preventDefault(); Utils.vibrateTry(); handleLogout(actionTarget); break;
                         case 'toggle-main-menu':
+                            Utils.vibrateTry();
                             if (State.get('isUserLoggedIn')) {
                                 section.querySelector('.logged-in-menu').classList.toggle('active');
                             } else {
-                                Utils.vibrateTry();
                                 UI.showAlert(Utils.getTranslation('menuAccessAlert'));
                             }
                             break;
                         case 'toggle-login-panel':
+                            Utils.vibrateTry();
                             if (!State.get('isUserLoggedIn')) {
                                 section.querySelector('.login-panel').classList.toggle('active');
                                 section.querySelector('.topbar').classList.toggle('login-panel-active');
@@ -826,24 +830,28 @@ document.addEventListener('DOMContentLoaded', () => {
                         case 'subscribe':
                             if (!State.get('isUserLoggedIn')) {
                                 Utils.vibrateTry(); UI.showAlert(Utils.getTranslation('subscribeAlert'));
+                            } else {
+                                Utils.vibrateTry(); // Vibrate on successful action too
+                                // Add subscribe logic here in future
                             }
                             break;
                         case 'toggle-notifications':
+                            Utils.vibrateTry();
                             if (State.get('isUserLoggedIn')) {
                                 const popup = UI.DOM.notificationPopup;
                                 popup.classList.toggle('visible');
                                 if(popup.classList.contains('visible')) Notifications.render();
                             } else {
-                                Utils.vibrateTry();
                                 UI.showAlert(Utils.getTranslation('notificationAlert'));
                             }
                             break;
                         case 'close-notifications':
+                            Utils.vibrateTry();
                             if (UI.DOM.notificationPopup) {
                                 UI.DOM.notificationPopup.classList.remove('visible');
                             }
                             break;
-                        case 'show-tip-jar': document.querySelector('#bmc-wbtn')?.click(); break;
+                        case 'show-tip-jar': Utils.vibrateTry(); document.querySelector('#bmc-wbtn')?.click(); break;
                     }
                 },
                 formSubmitHandler: (e) => {
@@ -974,6 +982,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Settings handlers
             function toggleEmailConsent() {
+                Utils.vibrateTry();
                 userSettings.emailConsent = !userSettings.emailConsent;
                 updateSettingsUI();
             }
@@ -1044,6 +1053,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 tabButtons.forEach(button => {
                     button.addEventListener('click', () => {
+                        Utils.vibrateTry(20);
                         const targetTab = button.dataset.tab;
                         tabButtons.forEach(btn => btn.classList.remove('active'));
                         button.classList.add('active');
