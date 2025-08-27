@@ -1,0 +1,39 @@
+name: Deploy WordPress Theme
+
+on:
+  push:
+    branches:
+      - main  # lub nazwa Twojego głównego brancha
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: FTP/SFTP Deploy
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      with:
+        server: wordpress2522224.home.pl
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./tingtong/
+        server-dir: /public_html/autoinstalator/wordpresspluslscache1/wp-content/themes/tingtong/
+        protocol: ftps
+        port: 21
+        timeout: 30000
+        # Opcje dodatkowe:
+        # Poniższa opcja usunie pliki z serwera, które nie istnieją w repozytorium.
+        # Używaj ostrożnie.
+        # dangerous-clean-slate: true
+        #
+        # Wyklucz pliki z transferu (np. .git, .DS_Store)
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/.DS_Store
+          README.md
+          PEHAPE.txt
+          tingtong.txt
