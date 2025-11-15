@@ -4,15 +4,22 @@ import { sql } from "@/lib/db";
 import { users } from "@/lib/models/schema";
 import { hash } from "bcryptjs";
 import { drizzle } from "drizzle-orm/neon-http";
+import { z } from "zod";
 
-export async function signUp(formData: FormData) {
-  const email = formData.get("email") as string;
-  const username = formData.get("username") as string;
-  const password = formData.get("password") as string;
+const SignUpSchema = z.object({
+  email: z.string().email(),
+  username: z.string().min(3),
+  password: z.string().min(8),
+});
 
-  if (!email || !username || !password) {
-    return { error: "Missing required fields" };
+export async function signUp(prevState: any, formData: FormData) {
+  const parsed = SignUpSchema.safeParse(Object.fromEntries(formData));
+
+  if (!parsed.success) {
+    return { error: "Invalid form data" };
   }
+
+  const { email, username, password } = parsed.data;
 
   const passwordHash = await hash(password, 10);
 
@@ -25,6 +32,6 @@ export async function signUp(formData: FormData) {
     return { success: true };
   } catch (error) {
     console.error("Error signing up:", error);
-    return { error: "Error signing up" };
+    return { error: "A user with this email or username already exists." };
   }
 }
