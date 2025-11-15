@@ -1,1 +1,93 @@
- Opis projektu Ting Tong (Wersja Szczegółowa - Zaktualizowana)Ting Tong to innowacyjna, w pełni autorska platforma wideo stworzona z myślą o monetyzacji talentu wokalnego bez pośredników. Projekt powstał jako manifest twórczej suwerenności, uniezależniający twórcę od algorytmów i wysokich prowizji Big Tech.🚀 Elevator PitchTing Tong to prywatna platforma wideo, która łączy funkcje TikToka, Patronite’a i Kickstartera w jednym, kontrolowanym ekosystemie.Użytkownicy skrolują pionowy feed z krótkimi filmami, lecz część treści jest zablokowana i dostępna tylko po spełnieniu określonych warunków:PWA-SECRET: Wymaga instalacji aplikacji jako PWA.SECRET: Wymaga wsparcia finansowego przez Własną Bramkę Płatności Stripe.Pełna automatyzacja: Darowizna natychmiastowo tworzy konto patrona w WordPressie, przypisując prawidłową Lokalizację (locale) i dając dostęp do ekskluzywnych materiałów. Zero algorytmów, 100% kontroli.🧠 Koncepcja i ArchitekturaTing Tong jest zbudowany od zera w oparciu o WordPress i technologię Progressive Web App (PWA), tworząc architekturę zbliżoną do Single Page Application (SPA). Frontend bazuje na ES Modules i SwiperJS (dla płynnego scrollowania), a backend PHP jest sercem logiki monetyzacji i zarządzania dostępami.Three-Tier Funnel Dostępu:Poziom DostępuOpisCel Biznesowy i TechnologicznyPUBLICWirusowe, zjawiskowe wideo.Budowanie zasięgu (TOFU), darmowy teaser treści.PWA-SECRETTreści dostępne po instalacji PWA.Budowanie soft commitment, zwiększenie retencji i umożliwienie Powiadomień Push.SECRET (Patron)Ekskluzywne materiały dla mecenasów.Bezpośrednia, natychmiastowa monetyzacja i budowa segmentu "Patronów Miłości".🔄 Automatyzacja Rejestracji i Bramka StripePrzejście na własną bramkę płatności Stripe pozwoliło na osiągnięcie maksymalnej kontroli nad danymi transakcyjnymi i eliminację pośredników (jak Zapier czy BMC).Proces tworzenia konta patrona:Inicjacja w Aplikacji: Użytkownik klika przycisk "Napiwek", co otwiera wbudowany modal płatności (Tipping Modal).Wskazówka Językowa (Frontend): Aplikacja mapuje aktualny język interfejsu (np. pl lub en) na kod kraju (PL lub GB) i wysyła go do backendu jako wskazówkę (country_hint).Tworzenie Payment Intent (Backend): Serwer PHP używa Stripe API do utworzenia obiektu Payment Intent, osadzając wskazówkę kraju w Metadanych.Finalizacja Płatności: Użytkownik dokonuje płatności w bezpiecznym środowisku Stripe, a środki trafiają bezpośrednio na konto twórcy.Webook Stripe (checkout.session.completed): Po udanej płatności, Stripe wysyła webhook do zdefiniowanego endpointu PHP.Weryfikacja i Lokalizacja (PHP): Skrypt PHP odbiera i weryfikuje webhook, po czym następuje logika Lokalizacji:System pobiera oficjalny kod kraju transakcji (lub używa metadanych jako fallbacku).Jeżeli kod kraju to PL, Lokalizacja konta WordPress (locale) jest ustawiana na pl_PL.W pozostałych przypadkach Lokalizacja jest ustawiana na en_GB (domyślny angielski).Rejestracja Konta: System wywołuje funkcję WordPressa, tworząc konto z nadanym locale, e-mailem i tymczasowym hasłem (tingtong).Dostęp: Użytkownik otrzymuje maila powitalnego i natychmiastowo zyskuje dostęp do treści SECRET.💡 Przewagi i Filozofia (Zaktualizowane)CechaZysk dla Twórcy✅ Pełna Kontrola PłatnościMaksymalna niezależność i integracja bramki Stripe bezpośrednio w aplikację.✅ Lokalizacja UżytkownikaPrecyzyjne ustawienie pola locale w WP (np. pl_PL / en_GB), co zapewnia poprawność maili i interfejsu.✅ 100% OwnershipPełna baza mailowa użytkowników, niezależność od zewnętrznych platform.✅ 95% RevenueMinimalne opłaty transakcyjne (Stripe), maksymalny przychód zatrzymywany przez Twórcę.✅ Zero AlgorytmówKontrola nad tym, co, kiedy i dla kogo jest publikowane.✅ Technologiczna PrzewagaWłasny ekosystem PWA ze złożoną, autorską logiką backendową.Filozofia projektu:"Anty-establishment approach to creator economy. Zamiast karmić algorytmy Big Tech, budujesz własny świat, w którym fani wspierają Cię bezpośrednio. Ty tworzysz – oni wspierają – wszyscy wygrywają."
+Migracja Ting Tong do Next.js (App Router)
+Ten projekt to migracja aplikacji Ting Tong WordPress PWA do nowoczesnego i skalowalnego stosu technologicznego opartego na Next.js (App Router), TypeScript i Vercel.
+
+Cel Migracji i Docelowy Wygląd
+Głównym i bezwzględnym celem jest wierne odtworzenie całego wyglądu (UI/UX) i działania oryginalnej aplikacji Ting Tong. Obejmuje to dynamiczny feed wideo, wszystkie modale (Napiwek, Konto, Pierwsze Logowanie) oraz panele boczne.
+
+🗃️ Punkt Referencyjny UI/UX (Legacy Code)
+Wszelkie komponenty UI oraz ich stylizacja muszą być odtworzone na podstawie plików z archiwalnego motywu WordPress.
+
+Kluczowa Referencja UI/UX: Pełna struktura HTML i wszystkich modali znajduje się w pliku: archive/ting-tong-theme/index.php.
+
+Kluczowa Referencja Stylów: Do osiągnięcia docelowego wyglądu niezbędne są style z pliku: archive/ting-tong-theme/style.css.
+
+📋 Plan Migracji (Next.js App Router)
+ETAP 1: Fundament Architektoniczny, Typowanie i UI Base
+Status: Architektura Next.js, TypeScript i podstawowe style są gotowe.
+
+Szkielet Next.js: ZREALIZOWANO. Ustanowienie struktury projektu (App Router, TS).
+
+Typowanie Kodu (TypeScript): ZREALIZOWANO. Modele danych (User, Comment, Slide, Donation) są na miejscu.
+
+Styling i RWD: W TRAKCIE. Wdrożenie Tailwind CSS jest w trakcie. PRIORYTETEM jest pełna migracja stylów CSS (zgodnie z referencją) i usunięcie problemu nieostylowanego widoku.
+
+UI Component Library (MODYFIKACJA): Wdrożenie Shadcn UI lub biblioteki headless.
+
+Assets: Migracja Globalnych Stylów CSS i kluczowych assetów graficznych do katalogu public/.
+
+Wczesna Konfiguracja Internacjonalizacji (PRZYSPIESZONA): Wdrożenie biblioteki i18n (next-intl) i konfiguracja routingu pod obsługę języków (np. /[lang]/app/*) jako priorytet.
+
+ETAP 2: Backend Core, Autoryzacja i Czytanie Danych (Server-First)
+Status: Modele danych i Route Handlers są na miejscu.
+
+Baza Danych (WERYFIKACJA STABILNOŚCI): Upewnienie się, że połączenie z bazą danych (Mongoose) jest zoptymalizowane pod Serverless (np. użycie memoizacji).
+
+Autoryzacja / Zabezpieczenia (Middleware): ZREALIZOWANO (Custom JWT). Wdrożenie Next.js Middleware do weryfikacji JWT/sesji i ochrony ścieżek.
+
+Logika Uwierzytelniania: ZREALIZOWANO. Logika logowania/rejestracji jest przeniesiona do Route Handlers.
+
+Pobieranie Danych (Server Components - MODYFIKACJA): Przeniesienie głównej logiki pobierania danych (SLIDES, USERS) do asynchronicznych Server Components (read-only), wykorzystując natywne funkcje fetch i Next.js Caching.
+
+Logika Użytkownika: Implementacja logiki wymuszenia uzupełnienia profilu (First Login Modal).
+
+ETAP 3: Infrastruktura i Logika Zapisu (KRYTYCZNA KONWERSJA NA SERVER ACTIONS)
+Status: Logika mutacji jest w API Routes – MUSI zostać przeniesiona do Server Actions.
+
+Mutacje Danych (KONWERSJA NA SERVER ACTIONS - KLUCZOWA ZMIANA): Przekształcenie logiki z Route Handlers POST/PUT/DELETE (np. polubienia, komentarze, aktualizacje profilu) na funkcje Server Actions ('use server').
+
+Wdrożenie revalidatePath i revalidateTag wewnątrz Server Actions do natychmiastowej rewalidacji danych.
+
+Dostarczanie Wideo (KRYTYCZNE): Wdrożenie CDN (Cloudflare Stream/AWS S3) i ustawienie transkodowania Adaptive Streaming (HLS/DASH).
+
+Oddzielny Storage Assetów + Optymalizacja Obrazów: Zmigrowanie zasobów statycznych (avatary, wideo, obrazy) na Oddzielny Storage (S3/Vercel Blob) i wdrożenie komponentu next/image.
+
+Własny System Komentarzy (Backend): Konwersja logiki komentarzy na Server Actions.
+
+Płatności i Zewnętrzne API (API Routes): Utrzymanie API Routes tylko dla operacji zewnętrznych: Logika inicjowania płatności Stripe i obsługa webhooka Stripe.
+
+Rate Limiting: Zaimplementowanie Rate Limiting na krytycznych Server Actions i API Routes.
+
+ETAP 4: Funkcjonalności Zaawansowane i Wiernie Odtworzenie Komponentów
+Status: Komponenty (np. CommentsSection.tsx, TippingModal.tsx) są przeniesione i gotowe do integracji.
+
+Global State & Video UX: Wdrożenie Zustand do zarządzania lekkim stanem UI (modal komentarzy, stan gracza wideo).
+
+Zarządzanie Formularzami: Wdrożenie React Hook Form do walidacji i kontroli pól.
+
+React Query (MODYFIKACJA STRATEGII): Integracja React Query tylko na Client Components, aby obsługiwać złożony stan klienta, polegając na Server Actions do mutacji i rewalidacji danych serwera.
+
+Real-Time Updates: Zintegrowanie External Service (Pusher/Ably) do obsługi Real-Time (dla polubień slajdów i komentarzy).
+
+Własny System Komentarzy (Frontend): Odtworzenie komponentu CommentsSection.jsx i jego integracja z logiką Server Actions / Real-Time.
+
+Notyfikacje Web Push (Pełne Wdrożenie): Wdrożenie Service Worker (sw.js), implementacja UI oraz logika subskrypcji/anulowania na stronie klienta.
+
+UI/UX Wiernie Odtworzone: Odtworzenie wizualne kluczowych komponentów i interfejsu strony konta.
+
+ETAP 5: Optymalizacja i Wygładzanie (Produkcja)
+Monitorowanie Błędów: Zintegrowanie Sentry do monitorowania błędów serwera (Server Actions) i klienta.
+
+Analityka: Dodanie Google Analytics 4 / Amplitude w app/layout.tsx.
+
+SEO i Metadane: Wprowadzenie Dynamicznych Metadanych Next.js (Open Graph/Twitter Cards) dla każdej strony wideo.
+
+Internacjonalizacja (i18n): Wypełnienie wszystkich brakujących tłumaczeń (na podstawie wczesnej struktury z Etapu 1).
+
+Generowanie Zasobów: Automatyczne generowanie map witryny (sitemaps) i kanałów RSS.
+
+🛠️ Instrukcje dla przyszłych agentów
+PRIORYTET Wizualny: Pracuj z plikiem archive/ting-tong-theme/index.php jako jedyną prawdą o docelowym wyglądzie i strukturze.
+
+Krytyczna Konwersja: Skup się na szybkiej konwersji logiki mutacji na Server Actions (Etap 3).
+
+Błędy UI: Upewnij się, że Etap 1 został zakończony, a żaden z widocznych elementów aplikacji nie jest nieostylowany.
