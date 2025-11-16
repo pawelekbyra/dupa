@@ -42,7 +42,7 @@ export default function Home() {
                 />
                 <BottomBar />
                 <Sidebar setCommentsOpen={setCommentsOpen} />
-                <CommentsModal open={commentsOpen} onOpenChange={setCommentsOpen} slideId={activeSlideId} />
+                <CommentsModal open={commentsOpen} onOpenChange={setCommentsOpen} slideId={String(activeSlideId)} />
               </div>
             </SwiperSlide>
           ))}
