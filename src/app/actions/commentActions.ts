@@ -8,7 +8,7 @@ import { auth } from '@/lib/auth';
 
 type CommentWithReplies = Comment & { user: { id: string; name: string; avatarUrl: string } };
 
-export const getComments = async (slideId: string): Promise<CommentWithReplies[]> => {
+export const getComments = async (postId: string): Promise<CommentWithReplies[]> => {
   const topLevelComments = await db
     .select({
       id: comments.id,
@@ -22,7 +22,7 @@ export const getComments = async (slideId: string): Promise<CommentWithReplies[]
     })
     .from(comments)
     .leftJoin(users, eq(comments.userId, users.id))
-    .where(eq(comments.slideId, slideId));
+    .where(eq(comments.postId, postId));
 
   // @ts-ignore
   return topLevelComments;
@@ -37,15 +37,15 @@ export const addComment = async (formData: FormData) => {
     const userId = parseInt(session.user.id, 10);
 
     const commentText = formData.get('comment') as string;
-    const slideId = formData.get('slideId') as string;
+    const postId = formData.get('postId') as string;
 
-    if (!commentText || !slideId) {
+    if (!commentText || !postId) {
       return { success: false, error: 'Missing required fields' };
     }
 
     await db.insert(comments).values({
       text: commentText,
-      slideId: slideId,
+      postId: postId,
       userId,
     });
 
