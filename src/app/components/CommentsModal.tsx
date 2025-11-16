@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useEffect } from 'react';
-import { addComment, getComments } from '../../actions/commentActions';
+import { addComment, getComments } from '@/app/actions/commentActions';
 import { useCommentsStore } from '@/lib/store';
 import CommentItem from './CommentItem';
 
