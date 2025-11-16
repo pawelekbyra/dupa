@@ -1,42 +1,85 @@
 'use server';
 
+import { db } from '@/lib/db';
+import { comments, users } from '@/lib/models/schema';
 import { Comment } from '@/lib/types';
+import { eq } from 'drizzle-orm';
+import { alias } from 'drizzle-orm/pg-core';
 
-const mockComments: Comment[] = [
-  {
-    id: '1',
-    text: 'This is the first comment!',
-    user: { id: 'user1', name: 'John Doe', avatarUrl: 'https://github.com/shadcn.png' },
-    replies: [
-      {
-        id: '3',
-        text: 'This is a reply to the first comment.',
-        user: { id: 'user2', name: 'Jane Smith', avatarUrl: 'https://github.com/shadcn.png' },
-        replies: [],
-        createdAt: new Date().toISOString(),
+type CommentWithReplies = Comment & { user: { id: string; name: string; avatarUrl: string } };
+
+async function fetchReplies(commentId: number): Promise<CommentWithReplies[]> {
+  const replyComments = await db
+    .select({
+      id: comments.id,
+      text: comments.text,
+      createdAt: comments.createdAt,
+      user: {
+        id: users.id,
+        name: users.username,
+        avatarUrl: users.avatar,
       },
-    ],
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: '2',
-    text: 'Great video, thanks for sharing.',
-    user: { id: 'user3', name: 'Peter Jones', avatarUrl: 'https://github.com/shadcn.png' },
-    replies: [],
-    createdAt: new Date().toISOString(),
-  },
-];
+    })
+    .from(comments)
+    .leftJoin(users, eq(comments.userId, users.id))
+    .where(eq(comments.parentId, commentId));
 
-export const getComments = async (slideId: string): Promise<Comment[]> => {
-  console.log(`Fetching comments for slide ${slideId}...`);
-  // Simulate a network delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockComments;
+  const repliesWithNested = await Promise.all(
+    replyComments.map(async (comment) => {
+      const replies = await fetchReplies(comment.id);
+      return { ...comment, replies };
+    })
+  );
+
+  // @ts-ignore
+  return repliesWithNested;
+}
+
+export const getComments = async (slideId: string): Promise<CommentWithReplies[]> => {
+  const topLevelComments = await db
+    .select({
+      id: comments.id,
+      text: comments.text,
+      createdAt: comments.createdAt,
+      user: {
+        id: users.id,
+        name: users.username,
+        avatarUrl: users.avatar,
+      },
+    })
+    .from(comments)
+    .leftJoin(users, eq(comments.userId, users.id))
+    .where(eq(comments.slideId, parseInt(slideId, 10)) && !comments.parentId);
+
+  const commentsWithReplies = await Promise.all(
+    topLevelComments.map(async (comment) => {
+      const replies = await fetchReplies(comment.id);
+      return { ...comment, replies };
+    })
+  );
+
+  // @ts-ignore
+  return commentsWithReplies;
 };
 
 export const addComment = async (formData: FormData) => {
-  const commentText = formData.get('comment');
-  console.log('New comment submitted:', commentText);
-  // Here you would typically save the comment to the database
+  const commentText = formData.get('comment') as string;
+  const slideId = formData.get('slideId') as string;
+  const parentId = formData.get('parentId') as string | null;
+
+  // TODO: Replace with actual user ID from session
+  const userId = 1;
+
+  if (!commentText || !slideId) {
+    return { success: false, error: 'Missing required fields' };
+  }
+
+  await db.insert(comments).values({
+    text: commentText,
+    slideId: parseInt(slideId, 10),
+    userId,
+    parentId: parentId ? parseInt(parentId, 10) : null,
+  });
+
   return { success: true };
 };

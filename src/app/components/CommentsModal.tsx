@@ -41,13 +41,20 @@ const CommentsModal: React.FC<CommentsModalProps> = ({ open, onOpenChange, slide
     },
   });
 
+  const { replyingTo, setReplyingTo } = useCommentsStore();
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = new FormData();
     formData.append('comment', values.comment);
+    formData.append('slideId', slideId);
+    if (replyingTo) {
+      formData.append('parentId', replyingTo);
+    }
 
     const result = await addComment(formData);
     if (result.success) {
       form.reset();
+      setReplyingTo(null);
       fetchComments(); // Refresh comments list
     }
   };
