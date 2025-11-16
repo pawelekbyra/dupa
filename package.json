@@ -12,10 +12,13 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
+    "@replyke/comments-social-react-js": "^6.0.8",
+    "@replyke/react-js": "^6.1.1",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
     "drizzle-kit": "^0.31.7",
     "drizzle-orm": "^0.44.7",
+    "jsonwebtoken": "^9.0.2",
     "next": "16.0.3",
     "pg": "^8.16.3",
     "postgres": "^3.4.7",
@@ -27,6 +30,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

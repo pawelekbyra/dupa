@@ -84,7 +84,7 @@ export async function signIn(prevState: any, formData: FormData) {
       expiresIn: "1h",
     });
 
-    cookies().set("session", token, {
+    (await cookies()).set("session", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60, // 1 hour
@@ -127,7 +127,7 @@ interface UserPayload extends JwtPayload {
 }
 
 export async function getUser() {
-  const session = cookies().get("session")?.value;
+  const session = (await cookies()).get("session")?.value;
   if (!session) {
     return null;
   }
@@ -148,5 +148,5 @@ export async function getUser() {
 }
 
 export async function signOut() {
-  cookies().delete("session");
+  (await cookies()).delete("session");
 }

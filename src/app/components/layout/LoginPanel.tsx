@@ -5,9 +5,15 @@ import { useFormState, useFormStatus } from "react-dom";
 import { signIn } from "@/app/actions/user";
 import { useEffect } from "react";
 
-const initialState = {
-  error: "",
-  success: false,
+// Definicja wspólnego typu stanu
+type State = {
+  error?: string;
+  success?: boolean;
+};
+
+const initialState: State = {
+  error: undefined,
+  success: undefined,
 };
 
 function SubmitButton() {
@@ -24,7 +30,6 @@ const LoginPanel = ({ animationClass }: { animationClass: string }) => {
 
   useEffect(() => {
     if (state?.success) {
-      // Odśwież stronę, aby załadować nową sesję użytkownika
       window.location.reload();
     }
   }, [state]);
@@ -52,10 +57,8 @@ const LoginPanel = ({ animationClass }: { animationClass: string }) => {
           <button
             type="button"
             className="password-toggle-btn"
-            data-action="toggle-password-visibility"
             aria-label="Pokaż/ukryj hasło"
           >
-            {/* Tutaj powinny znaleźć się ikony oka */}
           </button>
         </div>
         <SubmitButton />

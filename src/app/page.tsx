@@ -48,10 +48,7 @@ export default function Home() {
                   muted
                   loop
                 />
-                <Sidebar
-                  videoId={slide.id}
-                  user={currentUser ? { userId: currentUser.id, userName: currentUser.username } : null}
-                />
+                <Sidebar videoId={slide.id} user={currentUser ? { userId: currentUser.id, userName: currentUser.username } : null} />
               </div>
             </SwiperSlide>
           ))}

@@ -8,7 +8,6 @@ interface User {
   userId: string;
   userName: string;
   userAvatar?: string;
-  userEmail?: string;
 }
 
 interface SidebarProps {
@@ -53,7 +52,6 @@ const Sidebar = ({ videoId, user }: SidebarProps) => {
         isOpen={isCommentsOpen}
         onClose={() => setIsCommentsOpen(false)}
         videoId={videoId}
-        user={user}
       />
     </>
   );
