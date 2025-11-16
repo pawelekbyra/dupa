@@ -7,8 +7,13 @@ import { slidesData } from "./data";
 import TopBar from "./components/TopBar";
 import BottomBar from "./components/BottomBar";
 import Sidebar from "./components/Sidebar";
+import CommentsModal from "./components/CommentsModal";
+import { useState } from "react";
 
 export default function Home() {
+    const [commentsOpen, setCommentsOpen] = useState(false);
+    const [activeSlideId, setActiveSlideId] = useState(slidesData[0].id);
+
     useEffect(() => {
         const container = document.getElementById('webyx-container');
         if (container) {
@@ -20,7 +25,11 @@ export default function Home() {
     <main>
       <div id="webyx-container">
         <TopBar />
-        <Swiper direction={"vertical"} className="h-full w-full">
+        <Swiper
+          direction={"vertical"}
+          className="h-full w-full"
+          onSlideChange={(swiper) => setActiveSlideId(slidesData[swiper.activeIndex].id)}
+        >
           {slidesData.map((slide) => (
             <SwiperSlide key={slide.id} className="webyx-section">
               <div className="tiktok-symulacja video-loaded">
@@ -32,7 +41,8 @@ export default function Home() {
                   loop
                 />
                 <BottomBar />
-                <Sidebar />
+                <Sidebar setCommentsOpen={setCommentsOpen} />
+                <CommentsModal open={commentsOpen} onOpenChange={setCommentsOpen} slideId={activeSlideId} />
               </div>
             </SwiperSlide>
           ))}
