@@ -1,6 +1,8 @@
 import {
   pgTable,
   serial,
+  pgEnum,
+  boolean,
   text,
   varchar,
   timestamp,
@@ -21,31 +23,36 @@ export const users = pgTable("users", {
     .notNull(),
 });
 
-export const slides = pgTable("slides", {
+export const postType = pgEnum("post_type", ["public", "secretPatron", "secretPWA"]);
+
+export const posts = pgTable("posts", {
   id: text("id").primaryKey(),
-  videoUrl: text("video_url").notNull(),
-  title: text("title").notNull(),
-  description: text("description"),
-  authorId: integer("author_id")
+  userId: integer("user_id")
     .references(() => users.id)
     .notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
+  videoUrl: text("video_url"),
+  imageUrl: text("image_url"),
+  title: text("title").notNull(),
+  description: text("description"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  likesCount: integer("likes_count").default(0),
+  commentsCount: integer("comments_count").default(0),
+  isPublished: boolean("is_published").default(true),
+  type: postType("type").default("public"),
 });
 
-export const likes = pgTable("likes", {
+export const postLikes = pgTable("post_likes", {
   id: serial("id").primaryKey(),
   userId: integer("user_id")
     .references(() => users.id)
     .notNull(),
-  slideId: text("slide_id")
-    .references(() => slides.id)
+  postId: text("post_id")
+    .references(() => posts.id)
     .notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
+
 
 export const comments = pgTable("comments", {
   id: serial("id").primaryKey(),
@@ -53,8 +60,8 @@ export const comments = pgTable("comments", {
   userId: integer("user_id")
     .references(() => users.id)
     .notNull(),
-  slideId: text("slide_id")
-    .references(() => slides.id)
+  postId: text("post_id")
+    .references(() => posts.id)
     .notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
