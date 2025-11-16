@@ -29,6 +29,25 @@ const Sidebar: React.FC<SidebarProps> = ({ setCommentsOpen }) => {
         </svg>
         <span className="icon-label">Comment</span>
       </div>
+      <div className="icon-button">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 5l6 6-6 6M21 11H9a6 6 0 0 0-6 6"
+          />
+        </svg>
+        <span className="icon-label">Share</span>
+      </div>
+      <div className="icon-button">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <rect x="2" y="7" width="20" height="12" rx="2" ry="2" />
+          <path d="M2 10h20" />
+          <circle cx="18" cy="13" r="2" />
+        </svg>
+        <span className="icon-label">Tip</span>
+      </div>
     </div>
   );
 };

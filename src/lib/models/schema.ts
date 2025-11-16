@@ -21,6 +21,21 @@ export const users = pgTable("users", {
     .notNull(),
 });
 
+export const comments = pgTable("comments", {
+  id: serial("id").primaryKey(),
+  text: text("text").notNull(),
+  userId: integer("user_id")
+    .references(() => users.id)
+    .notNull(),
+  slideId: integer("slide_id")
+    .references(() => slides.id)
+    .notNull(),
+  parentId: integer("parent_id").references(() => comments.id),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
 export const slides = pgTable("slides", {
   id: serial("id").primaryKey(),
   videoUrl: text("video_url").notNull(),
