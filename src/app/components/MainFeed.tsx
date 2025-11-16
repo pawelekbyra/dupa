@@ -18,7 +18,11 @@ const MainFeed: React.FC = () => {
     if (!hasMore) return;
 
     const { posts: newPosts, nextCursor } = await getPosts(cursor);
-    setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+    setPosts((prevPosts) => {
+      const existingIds = new Set(prevPosts.map((p) => p.id));
+      const filteredNewPosts = newPosts.filter((p) => !existingIds.has(p.id));
+      return [...prevPosts, ...filteredNewPosts];
+    });
     setCursor(nextCursor);
     if (!nextCursor) {
       setHasMore(false);
