@@ -6,7 +6,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ setCommentsOpen }) => {
   return (
-    <div className="sidebar">
+    <div className="sidebar visible">
       <div className="icon-button">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path
