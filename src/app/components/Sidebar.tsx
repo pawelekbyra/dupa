@@ -1,8 +1,12 @@
 import React from "react";
 
-const Sidebar = () => {
+interface SidebarProps {
+  setCommentsOpen: (open: boolean) => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ setCommentsOpen }) => {
   return (
-    <div className="sidebar">
+    <div className="sidebar visible">
       <div className="icon-button">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path
@@ -13,6 +17,36 @@ const Sidebar = () => {
           />
         </svg>
         <span className="icon-label">Like</span>
+      </div>
+      <div className="icon-button" onClick={() => setCommentsOpen(true)}>
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+          />
+        </svg>
+        <span className="icon-label">Comment</span>
+      </div>
+      <div className="icon-button">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 5l6 6-6 6M21 11H9a6 6 0 0 0-6 6"
+          />
+        </svg>
+        <span className="icon-label">Share</span>
+      </div>
+      <div className="icon-button">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <rect x="2" y="7" width="20" height="12" rx="2" ry="2" />
+          <path d="M2 10h20" />
+          <circle cx="18" cy="13" r="2" />
+        </svg>
+        <span className="icon-label">Tip</span>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import {
   timestamp,
   integer,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -46,3 +47,37 @@ export const likes = pgTable("likes", {
     .defaultNow()
     .notNull(),
 });
+
+export const comments = pgTable("comments", {
+  id: serial("id").primaryKey(),
+  text: text("text").notNull(),
+  userId: integer("user_id")
+    .references(() => users.id)
+    .notNull(),
+  slideId: integer("slide_id")
+    .references(() => slides.id)
+    .notNull(),
+  parentId: integer("parent_id").references(() => comments.id),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+export const usersRelations = relations(users, ({ many }) => ({
+  comments: many(comments),
+}));
+
+export const commentsRelations = relations(comments, ({ one, many }) => ({
+  user: one(users, {
+    fields: [comments.userId],
+    references: [users.id],
+  }),
+  parent: one(comments, {
+    fields: [comments.parentId],
+    references: [comments.id],
+    relationName: 'replies',
+  }),
+  replies: many(comments, {
+    relationName: 'replies',
+  }),
+}));
