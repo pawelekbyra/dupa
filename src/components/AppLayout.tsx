@@ -1,15 +1,14 @@
-"use client";
-
+// src/components/AppLayout.tsx
 import React from 'react';
-import TopBar from './TopBar';
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="h-full w-full">
-      <TopBar />
-      <main className="h-full w-full">
-        {children}
-      </main>
+    <div id="app-frame">
+      {/* TopBar will be added here */}
+      <main>{children}</main>
+      {/* BottomBar will be added here */}
     </div>
   );
-}
+};
+
+export default AppLayout;

@@ -1,12 +1,509 @@
+/*
+Theme Name: Ting Tong Theme
+Theme URI: https://example.com/ting-tong-theme/
+Author: Your Name
+Author URI: https://example.com/
+Description: A custom theme for the Ting Tong application, converted from a static HTML project.
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: tingtongtheme
+*/
 
-@import "tw-animate-css";
+/* ==========================================================================
+           --- PRELOADER ---
+           ========================================================================== */
+.preloader-icon-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 160px;
+    height: 160px;
+    z-index: 10001;
+    opacity: 1;
+    transition: opacity 0.5s linear;
+}
 
-@custom-variant dark (&:is(.dark *));
+.splash-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    animation: pulse-glow 2.5s infinite ease-in-out;
+}
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-primary);
+  z-index: 10000;
+  transition: opacity 0.5s linear;
+  overflow: hidden; /* Prevent layout issues */
+}
 
+
+.preloader-hiding {
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1; /* FIX: Ensure the preloader goes behind all content when hidden */
+}
+
+/* ============================================================================
+   FIRST LOGIN MODAL - PREMIUM STYLES
+   ============================================================================ */
+.fl-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: flex-start; /* Wyrównuje zawartość do góry */
+  justify-content: center;
+  z-index: 10020;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+  padding-top: var(--topbar-height); /* <--- ZMIANA: Dynamiczna pozycja pod topbarem */
+}
+
+.fl-modal-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* FIX: Container for better keyboard handling and to fill space correctly */
+.fl-modal-content-wrapper {
+  width: 100%;
+  height: auto; /* <--- ZMIANA: Karta zajmuje tylko tyle miejsca, ile potrzebuje */
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px; /* Dodatkowy margines wokół karty */
+}
+
+/* ... reszta stylów fl-modal-content i fl-modal-content pozostaje bez zmian ... */
+
+.fl-modal-content {
+  transform: scale(0.95) translateY(20px);
+  opacity: 0;
+}
+
+.fl-modal-overlay.visible .fl-modal-content {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.fl-modal-content {
+  background: linear-gradient(180deg, #242426 0%, #18181a 100%);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  max-height: calc(100vh - 80px); /* <-- ZMIANA: Więcej miejsca, z marginesami */
+  width: 100%;
+  max-width: 500px;
+  /* ... (pozostałe style) ... */
+}
+
+.fl-header {
+  padding: 12px 24px 16px;
+  flex-shrink: 0;
+}
+
+.fl-drag-handle-container {
+  padding-bottom: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.fl-drag-handle {
+  width: 40px;
+  height: 5px;
+  background: #48484a;
+  border-radius: 2.5px;
+}
+
+.fl-title {
+  color: #fff;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.fl-progress-bar-container {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.fl-progress-bar-fill {
+  height: 100%;
+  width: 33.33%;
+  background: linear-gradient(90deg, #34d058, #007aff); /* FIX: Optymistyczny akcent - zieleń i błękit */
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.fl-body {
+  padding: 0 24px 20px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.fl-step {
+  display: none;
+}
+
+.fl-step.active {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fl-step-description {
+  color: #b0b3b8;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.fl-fields-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fl-input {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 14px 16px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.fl-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 0, 85, 0.15);
+}
+
+.fl-input::placeholder {
+  color: #8e8e93;
+}
+
+.fl-preference-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 14px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.fl-preference-label {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.fl-checkbox {
+  transform: scale(1.4);
+  accent-color: var(--accent-color);
+}
+
+.fl-language-selector {
+  display: none; /* Hidden by default, shown by JS */
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px;
+  border-radius: 12px;
+}
+
+.fl-language-selector.visible {
+    display: flex;
+}
+
+.fl-language-option {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: #b0b3b8;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.fl-language-option.active {
+  background: var(--accent-color);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(255, 0, 85, 0.3);
+}
+
+.fl-hint-text {
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.fl-email-display {
+  display: block;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+}
+
+.fl-footer {
+  padding: 16px 24px;
+  background: #18181a;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: calc(16px + var(--safe-area-bottom));
+}
+
+.fl-footer-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.fl-btn {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fl-btn:active {
+  transform: scale(0.97);
+}
+
+.fl-btn-prev {
+  background: #3a3a3c;
+  color: #fff;
+  display: none; /* Hidden by default */
+}
+
+.fl-btn-next {
+  background: linear-gradient(90deg, #007aff, #0056b3);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.fl-btn-submit {
+  background: linear-gradient(90deg, #34c759, #28a745);
+  color: #fff;
+  display: none; /* Hidden by default */
+  box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
+}
+
+#flNameError,
+#flPasswordError {
+    margin-top: -8px;
+    margin-bottom: 8px;
+}
+
+/* --- Tipping Modal Specific Styles --- */
+
+.tipping-amount-container {
+    display: flex;
+    align-items: center;
+    background-color: #2c2c2e;
+    border-radius: 12px;
+    padding: 4px;
+    border: 1px solid #4d4d50;
+    transition: border-color 0.2s;
+}
+
+.tipping-amount-container:focus-within {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(255, 0, 85, 0.15);
+}
+
+#tippingAmount {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 12px 16px;
+    text-align: center;
+    -moz-appearance: textfield; /* Firefox */
+}
+
+#tippingAmount::-webkit-outer-spin-button,
+#tippingAmount::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.tipping-currency {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.6);
+    padding-right: 20px;
+}
+
+#tippingEmailContainer {
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#tippingEmailContainer.visible {
+    opacity: 1;
+    max-height: 100px; /* enough for input and hint */
+    margin-top: 16px;
+}
+
+.loading-spinner.large {
+    width: 48px;
+    height: 48px;
+    border-width: 4px;
+}
+@keyframes pulse-glow {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+}
+.preloader-content-container {
+  position: absolute;
+  top: calc(50% + 80px); /* Odsunięcie w dół o połowę wysokości obrazka (80px to połowa z 160px) */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* FIX: Vertically center content in the available space */
+  overflow-y: auto; /* FIX: Allow scrolling on extremely small screens as a safeguard */
+  padding: 10px 20px calc(15px + var(--safe-area-bottom));
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateY(100%);
+  transition:
+    transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+    opacity 0.6s ease-out,
+    padding 0.3s ease-out;
+}
+.preloader-content-container::-webkit-scrollbar {
+  display: none;
+}
+.preloader-content-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+#preloader.content-visible .preloader-content-container {
+  opacity: 1;
+  transform: translateY(0);
+}
+.language-selection {
+  margin-top: 0; /* FIX: Remove margin, as justify-content now handles vertical position */
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  flex-shrink: 0; /* FIX: Prevent shrinking on flex parent */
+}
+.language-selection h2 {
+  font-size: clamp(1.1rem, 3vh, 1.3rem); /* Approx 17.6px to 20.8px */
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: clamp(10px, 3vh, 20px);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  transition:
+    font-size 0.3s ease-out,
+    margin-bottom 0.3s ease-out;
+}
+.language-selection .lang-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 2vh, 15px);
+  width: 100%;
+  justify-content: center;
+  transition: gap 0.3s ease-out;
+}
+@keyframes subtle-flicker-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 64, 129, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 16px 8px rgba(255, 64, 129, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 64, 129, 0);
+  }
+}
+.language-selection button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: clamp(8px, 2vh, 16px) clamp(18px, 3vw, 24px);
+  margin: 0;
+  font-size: clamp(0.875rem, 2.2vh, 1.125rem); /* Approx 14px to 18px */
+  font-weight: 600;
+  border-radius: clamp(12px, 2vh, 16px);
+  cursor: pointer;
+  width: 100%;
+  max-width: 400px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -webkit-tap-highlight-color: transparent;
+}
+.language-selection button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.language-selection button:active:not(:disabled) {
+  transform: translateY(-1px) scale(0.98);
+  transition-duration: 0.1s;
+}
+.language-selection button.is-selected {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #fff;
+  animation: subtle-flicker-glow 1s ease-out;
+}
+.language-selection button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+           --- STYLE GŁÓWNE, RESET I SCROLLING ---
+           ========================================================================== */
 :root {
 	--app-height: 100%;
 	--accent-color: #ff0055;
@@ -32,38 +529,6 @@
 	--topbar-height: calc(var(--topbar-base-height) + var(--safe-area-top));
 	--bottombar-height: calc( var(--bottombar-base-height) + var(--safe-area-bottom) );
 	--video-controls-height: 40px;
-	--radius: 0.625rem;
-	--card: oklch(1 0 0);
-	--card-foreground: oklch(0.145 0 0);
-	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(0.145 0 0);
-	--primary: oklch(0.205 0 0);
-	--primary-foreground: oklch(0.985 0 0);
-	--secondary: oklch(0.97 0 0);
-	--secondary-foreground: oklch(0.205 0 0);
-	--muted: oklch(0.97 0 0);
-	--muted-foreground: oklch(0.556 0 0);
-	--accent: oklch(0.97 0 0);
-	--accent-foreground: oklch(0.205 0 0);
-	--destructive: oklch(0.577 0.245 27.325);
-	--border: oklch(0.922 0 0);
-	--input: oklch(0.922 0 0);
-	--ring: oklch(0.708 0 0);
-	--chart-1: oklch(0.646 0.222 41.116);
-	--chart-2: oklch(0.6 0.118 184.704);
-	--chart-3: oklch(0.398 0.07 227.392);
-	--chart-4: oklch(0.828 0.189 84.429);
-	--chart-5: oklch(0.769 0.188 70.08);
-	--sidebar: oklch(0.985 0 0);
-	--sidebar-foreground: oklch(0.145 0 0);
-	--sidebar-primary: oklch(0.205 0 0);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.97 0 0);
-	--sidebar-accent-foreground: oklch(0.205 0 0);
-	--sidebar-border: oklch(0.922 0 0);
-	--sidebar-ring: oklch(0.708 0 0);
-	--background: oklch(1 0 0);
-	--foreground: oklch(0.145 0 0);
 }
 * {
   margin: 0;
@@ -85,7 +550,15 @@ body {
   user-select: none;
   -webkit-user-select: none;
 }
-
+body::-webkit-scrollbar,
+#webyx-container::-webkit-scrollbar {
+  display: none;
+}
+body,
+#webyx-container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
 #webyx-container {
   position: fixed;
   top: 0;
@@ -126,6 +599,347 @@ body {
     transform: translateZ(0);
 }
 
+/* ==========================================================================
+           --- GŁÓWNY LAYOUT (TIKTOK-LIKE) ---
+           ========================================================================== */
+.tiktok-symulacja {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: black;
+  color: white;
+  z-index: 1;
+  font-family: "Manrope", sans-serif;
+}
+.tiktok-symulacja iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none !important;
+}
+.tiktok-symulacja * {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+.secret-overlay {
+  position: absolute;
+  top: var(--topbar-height);
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--topbar-height) - var(--bottombar-height));
+  background-repeat: repeat;
+  background-size: 300px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, top 0.3s ease-out, height 0.3s ease-out;
+  overflow: hidden;
+}
+.secret-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.secret-overlay .mur-container {
+  /* Ukrycie hardkodowanego muru (cegieł) na rzecz tła, by zawsze sięgał do dołu */
+  display: none !important;
+}
+
+/* Ten kontener musi mieć ten sam kolor co fuga w Canvas, aby były spójne */
+.mur-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    /* Upewnia się, że "fuga" jest kolorem tła */
+    background-color: #333333;
+    overflow: hidden;
+    display: block !important; /* Wymuś widoczność */
+}
+
+.mur-row {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-bottom: 1px;
+}
+
+.mur-row:nth-child(even) {
+    margin-left: -30.5px;
+}
+
+/* W statycznym murze obrys (fuga) jest realizowana przez tło kontenera i marginesy. */
+.cegla {
+    width: 60px;
+    height: 30px;
+    background-color: #ffffff;
+    /* Daje efekt białej cegły z ciemną fugą */
+    margin-right: 1px;
+    flex-shrink: 0;
+}
+/* --- End Brick Wall --- */
+
+.secret-overlay .secret-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+}
+.secret-overlay .secret-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.secret-overlay .secret-subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.pwa-secret-overlay {
+  position: absolute;
+  top: var(--topbar-height);
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--topbar-height) - var(--bottombar-height));
+  background: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  backdrop-filter: blur(12px) saturate(120%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, top 0.3s ease-out, height 0.3s ease-out;
+}
+.pwa-secret-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.pwa-secret-overlay .pwa-secret-icon,
+.pwa-secret-overlay .secret-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+}
+.pwa-secret-overlay .pwa-secret-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.pwa-secret-overlay .pwa-secret-subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.pwa-secret-overlay {
+    height: calc(100% - var(--topbar-height) - var(--bottombar-height));
+}
+.player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translate3d(0, 0, 0); /* Fix for video flickering on iOS */
+}
+.pause-overlay {
+  position: absolute;
+  top: var(--topbar-height);
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--topbar-height) - var(--bottombar-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent; /* Zmień kolor na przeźroczysty */
+  z-index: 101;
+  opacity: 0;
+  pointer-events: none;
+  transition: top 0.3s ease-out, height 0.3s ease-out, opacity 0.2s ease-in-out;
+  visibility: hidden;
+}
+.tiktok-symulacja:not(.video-loaded) .pause-overlay {
+  display: none !important;
+}
+.pause-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+.pause-icon {
+  width: 80px;
+  height: 80px;
+  color: rgba(255, 255, 255, 0.8);
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+}
+
+/* ✅ NOWE: Replay overlay */
+.replay-overlay {
+  position: absolute;
+  top: var(--topbar-height);
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--topbar-height) - var(--bottombar-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  z-index: 101;
+  opacity: 0;
+  pointer-events: none;
+  transition: top 0.3s ease-out, height 0.3s ease-out, opacity 0.2s ease-in-out;
+  visibility: hidden;
+}
+
+.tiktok-symulacja:not(.video-loaded) .replay-overlay {
+  display: none !important;
+}
+
+.replay-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.replay-icon {
+  width: 80px;
+  height: 80px;
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.6));
+  animation: replayPulse 2s ease-in-out infinite;
+}
+
+@keyframes replayPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+
+/* ✅ FIX 2: Kontrolki wideo w poziomie, bliżej lewej krawędzi */
+.video-controls {
+  position: absolute;
+  bottom: calc(var(--bottombar-height) + 8px);
+  left: 4px; /* Odsunięcie od lewej krawędzi */
+  right: 4px; /* Odsunięcie od prawej krawędzi */
+  width: auto; /* Szerokość auto, aby dopasować się do lewej i prawej */
+  z-index: 105;
+  display: flex;
+  flex-direction: row; /* Układ poziomy */
+  align-items: center;
+  justify-content: space-between; /* Kluczowe dla rozmieszczenia */
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+}
+
+.tiktok-symulacja.video-loaded .video-controls {
+    opacity: 1;
+}
+
+.video-controls-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px; /* Odstęp między przyciskami po lewej */
+}
+
+.video-controls button {
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  width: 34px; /* Zmniejszono */
+  height: 34px; /* Zmniejszono */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, opacity 0.3s ease-out;
+  padding: 0;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.video-controls button svg {
+  width: 18px; /* Zmniejszono */
+  height: 18px; /* Zmniejszono */
+  transition: fill 0.3s ease-out, stroke 0.3s ease-out;
+}
+
+.video-controls button:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.video-controls button:active {
+  transform: scale(0.9);
+}
+
+.info-button svg.info-icon-pulsing {
+    animation: pulse 2.5s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    transition: none !important;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.7;
+    }
+}
+
+.cc-button {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.elegant-modal-error {
+    color: #ff8a80; /* Light red for dark theme */
+    background-color: rgba(255, 138, 128, 0.1); /* Subtle red background */
+    border: 1px solid rgba(255, 138, 128, 0.3);
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+    display: none; /* Hidden by default */
+}
+.topbar {
+  background: var(--bg-primary);
+}
+.tiktok-symulacja .bottombar {
+  background: rgba(0, 0, 0, 0.7); /* Półprzezroczyste czarne tło dla lepszej czytelności */
+}
+.login-panel {
+  background: rgba(var(--bg-secondary-rgb, 28, 28, 30), 0.8);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
 .topbar {
   position: absolute; /* Zmienione z 'fixed' na 'absolute' */
   display: flex;
@@ -147,6 +961,40 @@ body {
   transition: border-color 0.3s ease-out;
 }
 
+/* Stabilizacja kluczowych elementów interfejsu (topbar, sidebar, bottombar) */
+.topbar,
+.tiktok-symulacja .sidebar,
+.tiktok-symulacja .bottombar {
+  /* Wymuszenie własnej, stabilnej warstwy GPU dla stałych elementów */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.topbar.login-panel-active {
+  border-bottom-color: transparent;
+}
+.topbar.login-panel-active .central-text-wrapper.with-arrow::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+.central-text-wrapper {
+  position: relative;
+}
+.topbar-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  pointer-events: none;
+}
+.central-text-wrapper.with-arrow::after {
+  content: "▼";
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  opacity: 0.8;
+  margin-left: 6px;
+  transition: transform 0.3s ease;
+}
 .tiktok-symulacja .sidebar {
   position: absolute;
   top: calc(
@@ -165,6 +1013,9 @@ body {
     transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+.tiktok-symulacja.video-loaded .sidebar.visible {
+  transform: translateY(-50%) translateX(0);
+}
 .tiktok-symulacja .bottombar {
   position: absolute;
   bottom: 0;
@@ -178,10 +1029,615 @@ body {
   color: var(--text-primary);
   z-index: 10050;
   padding-bottom: calc(12px + var(--safe-area-bottom));
-  opacity: 1;
+  opacity: 0;
   transition: opacity 0.6s ease-out;
 }
 
+/* ✅ NOWE: Pokaż bottombar dopiero gdy video jest załadowane */
+.tiktok-symulacja.video-loaded .bottombar {
+  opacity: 1;
+}
+
+/* Dodaj tę regułę, aby dostosować dolny pasek, gdy widoczony jest pasek instalacji PWA */
+.app-frame--pwa-visible .bottombar {
+}
+.progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10px; /* Increased height to make it a better touch target */
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    align-items: center;
+    z-index: 10010;
+}
+
+.progress-bar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 4px;
+    background-color: rgba(255, 0, 85, 0.3);
+    transition: height 0.2s ease-in-out;
+}
+
+.progress-bar-fill {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0%;
+    height: 4px;
+    background-color: var(--progress-bar-color);
+    border-radius: 2px;
+    transition: height 0.2s ease-in-out;
+    pointer-events: none;
+}
+.progress-bar-handle {
+    position: absolute;
+    top: 50%;
+    left: 0%; /* Will be updated by JS */
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: white;
+    transform: translate(-50%, -50%) scale(1);
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 1; /* Always visible */
+    pointer-events: none; /* The whole bar is the target */
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
+}
+.progress-bar:hover::before,
+.progress-bar.dragging::before,
+.progress-bar:hover .progress-bar-fill,
+.progress-bar.dragging .progress-bar-fill {
+    height: 6px;
+}
+.progress-bar:hover .progress-bar-handle,
+.progress-bar.dragging .progress-bar-handle {
+    transform: translate(-50%, -50%) scale(1.5);
+}
+
+.tiktok-symulacja .text-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tiktok-symulacja .slide-meta-line {
+  display: flex;
+  align-items: center; /* Lepsze wyrównanie w pionie */
+  gap: 8px;
+  width: 100%;
+  overflow: hidden; /* Zapobiegaj przepełnieniu */
+}
+
+.tiktok-symulacja .author-name {
+  font-size: 16px;
+  font-weight: 700; /* Używamy <strong>, więc pogrubiamy */
+  color: var(--text-primary);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+  /* NOWE: Pozwól na skracanie i dodaj wielokropek, aby uniknąć przepełnienia */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.tiktok-symulacja .slide-title {
+  font-size: 16px;
+  font-weight: 400; /* Zwykła waga dla kontrastu */
+  line-height: 1.2;
+  color: var(--text-primary);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+  white-space: nowrap; /* Nie zawijaj tekstu */
+  overflow: hidden; /* Ukryj przepełnienie */
+  text-overflow: ellipsis; /* Dodaj wielokropek */
+  min-width: 0; /* Pozwól na zmniejszenie */
+}
+
+.tiktok-symulacja .slide-description {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-primary);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+  margin-top: 4px;
+  /* Ograniczenie do 2 linii z wielokropkiem */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Ogranicz do 2 linii */
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
+
+/* ==========================================================================
+           --- KOMPONENTY UI: PRZYCISKI I IKONY ---
+           ========================================================================== */
+.tiktok-symulacja .profile {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 6px;
+}
+.tiktok-symulacja .profileButton {
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.2s var(--transition-timing);
+}
+.tiktok-symulacja .profileButton:active {
+  transform: scale(1.1);
+  transition-duration: 0.1s;
+}
+.tiktok-symulacja .profile img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid black;
+  display: block;
+  transition:
+    border-color 0.1s ease-in-out,
+    filter 0.2s;
+  background-color: white; /* Dodane białe tło */
+  animation: flicker-glow 2s infinite;
+}
+
+@keyframes flicker-glow {
+ 0% { box-shadow: 0 0 8px rgba(255, 255, 255, 0.4); }
+ 50% { box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.8); }
+ 100% { box-shadow: 0 0 8px rgba(255, 255, 255, 0.4); }
+}
+
+/* Styl dla obwódki VIP */
+.vip-avatar-border {
+  position: relative;
+  padding: 0;
+  background-clip: padding-box !important;
+  animation: flicker-glow 2s infinite;
+  transition: border-color 0.1s ease-in-out, filter 0.2s;
+  background-color: white; /* Dziedziczenie defaultowego tła jest ok */
+}
+.tiktok-symulacja .profileButton:active img {
+  border-color: var(--accent-color);
+}
+.tiktok-symulacja .plus {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent-color);
+  color: white;
+  border: 2px solid black;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 1;
+  pointer-events: none;
+  transition: border-color 0.1s ease-in-out;
+}
+.tiktok-symulacja.is-logged-in .profile .plus {
+  display: none;
+}
+.tiktok-symulacja .profileButton:active + .plus {
+  border-color: var(--accent-color);
+}
+.tiktok-symulacja .icon-button {
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  font-size: 11px;
+  transition: transform 0.2s var(--transition-timing), opacity 0.2s ease-out;
+  gap: 2px;
+}
+.tiktok-symulacja .icon-button:focus,
+.tiktok-symulacja .profileButton:focus {
+  outline: none;
+}
+.tiktok-symulacja .icon-button:active:not(:disabled) {
+  transform: scale(1.1);
+  transition-duration: 0.1s;
+}
+.tiktok-symulacja .icon-button svg {
+  width: 32px;
+  height: 32px;
+  stroke: white;
+  stroke-width: 1.5;
+  fill: none;
+  transition:
+    stroke 0.2s ease-in-out,
+    fill 0.2s ease-in-out;
+  pointer-events: none;
+  padding: 0;
+  margin: 0;
+  display: block;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+}
+.tiktok-symulacja .icon-button .icon-label {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  line-height: 1.1;
+  transition: color 0.2s ease-in-out;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+}
+.tiktok-symulacja .like-button.active > svg {
+  fill: var(--accent-color);
+  stroke: white;
+}
+.tiktok-symulacja .like-button:active:not([disabled]) {
+  transform: scale(1.2);
+}
+.tiktok-symulacja .tipButton {
+  width: 64px;
+  margin-top: 0;
+  flex-shrink: 0;
+}
+.tiktok-symulacja .like-button:active:not(:disabled) svg {
+  stroke: white !important;
+}
+.topbar-central-trigger {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+.topbar-central-trigger:active {
+  transform: scale(0.98);
+}
+.topbar-icon-btn {
+  position: absolute;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  transition:
+    transform 0.1s ease-in-out,
+    opacity 0.2s;
+  /* ✅ FIX: Center vertically considering safe area */
+  top: calc(var(--safe-area-top) + (var(--topbar-base-height) / 2));
+  transform: translateY(-50%);
+}
+.hamburger-icon {
+  left: 0;
+}
+.notification-bell {
+  right: 0;
+}
+.topbar-icon-btn:active:not([disabled]) {
+  transform: translateY(-50%) scale(0.9);
+}
+.topbar-icon-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: translateY(-50%) scale(1);
+}
+.hamburger-icon svg {
+  stroke: white;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  fill: none;
+}
+.notification-bell svg {
+  stroke: white;
+  fill: none;
+}
+.notification-dot {
+  position: absolute;
+  top: 10px;
+  right: 11px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* ==========================================================================
+           --- KOMPONENTY UI: PANELE I MENU ---
+           ========================================================================== */
+@keyframes slideInFromTop {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutToTop {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutUp {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    to {
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.login-panel {
+  position: absolute;
+  top: var(--topbar-height);
+  left: 0;
+  width: 100%;
+  color: white;
+  z-index: 114;
+  border-top: none;
+  /* Start hidden by default */
+  visibility: hidden;
+  opacity: 0;
+}
+
+.login-panel.active {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.login-panel.login-panel--closing {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+.login-panel > div,
+.login-panel > form {
+  padding: 10px 15px;
+  background: transparent !important;
+}
+.login-panel .login-form {
+background: white;
+/* ZMIANA 1: Nowy dolny padding 10px */
+padding: 10px 20px 10px;
+border-radius: 8px;
+display: flex;
+flex-direction: column;
+gap: 12px;
+width: 100%;
+max-width: 400px;
+/* ZMIANA 2: Nowy górny margines -7px (daje 3px odległości od topbara) */
+margin: -7px auto 0;
+}
+
+/* === LOGIN PANEL NEW STYLE === */
+.login-panel .login-form .password-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.login-panel .login-form input[type="text"],
+.login-panel .login-form input[type="password"] {
+  background: white;
+  border: 2px solid black;
+  font-weight: bold;
+  color: black;
+  padding: 8px 40px 8px 10px; /* Add padding to the right for the icon */
+  border-radius: 4px;
+  width: 100%;
+  font-size: 16px;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 1; /* Make fully opaque */
+  transition: transform 0.2s;
+}
+
+.password-toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+.password-toggle-btn svg {
+  width: 22px; /* Slightly larger */
+  height: 22px; /* Slightly larger */
+  fill: black; /* Use fill for solid icons */
+  stroke: none; /* No stroke needed */
+}
+
+.login-panel .login-form button[type="submit"] {
+  background: var(--accent-color);
+  border: 2px solid black;
+  width: 100%;
+  padding: 10px;
+  font-weight: bold;
+  color: white;
+  text-transform: uppercase;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.login-panel .login-form button[type="submit"]:active {
+  background: #222;
+}
+
+.logged-in-menu {
+  position: absolute;
+  top: var(--topbar-height);
+  left: 0;
+  z-index: 110;
+  background-color: rgba(var(--bg-secondary-rgb, 28, 28, 30), 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom-right-radius: 12px;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  border: none; /* Removed border */
+}
+.logged-in-menu.active {
+  max-height: 200px;
+}
+.logged-in-menu a {
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 12px 24px 12px 16px;
+  font-size: 16px;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease;
+}
+.logged-in-menu a:last-child {
+  border-bottom: none;
+}
+.logged-in-menu a:hover,
+.logged-in-menu a:focus {
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+
+/* ==========================================================================
+           --- KOMPONENTY UI: MODALE I ALERTY ---
+           ========================================================================== */
+#alertBox {
+  /* ✅ FIX: Zmieniono na position:fixed aby zapewnić widoczność w PWA */
+  position: fixed;
+  /* ✅ FIX: Obniżono pozycję bliżej dolnego paska */
+  bottom: calc(var(--bottombar-height) + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  transition: bottom 0.3s ease-out;
+
+  background-color: #000000;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  z-index: 10500; /* Znacząco podniesiony z-index */
+  white-space: nowrap; /* ✅ FIX: Wymuś jedną linię dla krótkich tekstów */
+
+  /* ✅ FIX: Szerokość dopasowana do treści, z marginesami */
+  width: fit-content;
+  max-width: calc(100vw - 40px); /* Maksymalna szerokość z marginesami po 20px */
+
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  border: 1px solid #000;
+  animation: fadeInOut 4s ease-in-out forwards;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#app-frame.hide-ui #alertBox {
+  /* ✅ FIX: Dostosowano pozycję w trybie immersyjnym */
+  bottom: calc(var(--video-controls-height) + var(--safe-area-bottom) + 12px);
+}
+
+#alertBox svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+#alertText {
+    display: block;
+    min-width: 0;
+    flex-grow: 1;
+    white-space: normal; /* ✅ FIX: Pozwól długim tekstom na zawijanie */
+}
+
+#alertBox.visible {
+  display: flex;
+}
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  90% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+}
 .modal-overlay,
 .fl-modal-overlay,
 #commentsModal,
@@ -227,266 +1683,308 @@ body {
     transform: scale(1);
 }
 
-.tiktok-symulacja {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: black;
-  color: white;
-  z-index: 1;
-  font-family: "Manrope", sans-serif;
-}
-
-.player {
+.modal-close-btn {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: translate3d(0, 0, 0); /* Fix for video flickering on iOS */
-}
-
-.tiktok-symulacja .text-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.tiktok-symulacja .author-name {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-}
-
-.tiktok-symulacja.video-loaded .sidebar.visible {
-  transform: translateY(-50%) translateX(0);
-}
-
-.tiktok-symulacja .icon-button {
-  background: none;
-  border: none;
-  font: inherit;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  font-size: 11px;
-  transition: transform 0.2s var(--transition-timing), opacity 0.2s ease-out;
-  gap: 2px;
-}
-
-.tiktok-symulacja .icon-button svg {
+  top: 8px;
+  right: 8px;
   width: 32px;
   height: 32px;
-  stroke: white;
-  stroke-width: 1.5;
-  fill: none;
-  transition:
-    stroke 0.2s ease-in-out,
-    fill 0.2s ease-in-out;
-  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
   padding: 0;
-  margin: 0;
-  display: block;
-  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+  color: #111;
+  z-index: 10;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.modal-close-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  background-color: rgba(0,0,0,0.1);
 }
 
-.tiktok-symulacja .icon-button .icon-label {
-  margin: 0;
+/* Modal: Info */
+.info-modal-overlay {
+    background: rgba(0, 0, 0, 0.7); /* Match elegant modal overlay */
+}
+
+.info-modal-content {
+    /* Make it look like the elegant modal card */
+    background: linear-gradient(180deg, #28282a 0%, #1c1c1e 100%);
+    color: #f0f0f0;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 420px;
+    min-height: 300px; /* Give it some empty size */
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    /* Animation from elegant modal */
+    transform: scale(0.95) translateY(10px);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+    position: relative; /* For the close button */
+}
+
+.info-modal-overlay.visible .info-modal-content {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+#infoModal .modal-body {
+  /* Make it empty */
   padding: 0;
-  text-align: center;
-  line-height: 1.1;
-  transition: color 0.2s ease-in-out;
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+  flex-grow: 1;
 }
 
-.tiktok-symulacja .slide-title {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.2;
-  color: var(--text-primary);
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
+/* Style the new close button */
+#infoModal .modal-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  color: #fff;
+  z-index: 10;
+  opacity: 0.8;
+  transition: opacity 0.2s, transform 0.2s;
 }
 
-@media (min-width: 600px) {
-  #webyx-container {
-    height: 100vh;
-    width: calc(100vh * 9 / 16); /* Proporcje 9:16 */
-    max-width: 100%;
-    margin: 0 auto; /* Wyśrodkowanie */
-    left: 0; /* POPRAWKA: Niezbędne do centrowania elementu fixed/absolute */
-    right: 0; /* POPRAWKA: Niezbędne do centrowania elementu fixed/absolute */
-    border: 1px solid var(--border-color);
-    box-shadow: 0 0 80px rgba(0, 0, 0, 0.6), 0 0 120px rgba(var(--accent-color-rgb), 0.15);
-    animation: app-glow 8s infinite ease-in-out;
+#infoModal .modal-close-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.crowdfunding-container {
+    padding: 16px 10px;
+    text-align: center;
+}
+
+.crowdfunding-header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.crowdfunding-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    text-align: center;
+    width: 100%;
+}
+
+.crowdfunding-subtitle {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+    max-width: 90%;
+    margin: 0 auto;
+    margin-bottom: 16px;
+}
+
+.crowdfunding-description {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    max-width: 90%;
+    margin: 0 auto 24px;
+}
+
+#infoModal .premiere-date-value {
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 22px;
+    margin-top: 4px;
+}
+
+.progress-section {
+    margin-bottom: 20px;
+}
+
+.progress-bar-wrapper {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 3px;
+    position: relative;
     overflow: hidden;
-  }
-
-  .modal-overlay,
-  .fl-modal-overlay,
-  .elegant-modal-overlay,
-  .crop-modal,
-  .notification-popup,
-  .image-lightbox,
-  #bmc-w-modal-container,
-  .account-modal-overlay,
-  .profile-modal-overlay,
-  #bmc-w-modal-container iframe,
-  #bmc-w-modal-container > div
-  {
-    width: calc(100vh * 9 / 16) !important;
-    max-width: 100% !important;
-    left: 0 !important;
-    right: 0 !important;
-    margin: 0 auto !important;
-    top: 0 !important;
-    height: 100% !important;
-    border-left: 1px solid var(--border-color) !important;
-    border-right: 1px solid var(--border-color) !important;
-    box-sizing: border-box !important;
-  }
-
-  .modal-overlay .modal-content,
-  .fl-modal-overlay .fl-modal-content,
-  .crop-modal .crop-modal-content,
-  .notification-popup,
-  .account-modal-content
-  {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-    left: 0 !important;
-    right: 0 !important;
-    margin: 0 !important;
-    top: 0 !important;
-  }
 }
 
-@theme inline {
-	--radius-sm: calc(var(--radius) - 4px);
-	--radius-md: calc(var(--radius) - 2px);
-	--radius-lg: var(--radius);
-	--radius-xl: calc(var(--radius) + 4px);
-	--color-background: var(--background);
-	--color-foreground: var(--foreground);
-	--color-card: var(--card);
-	--color-card-foreground: var(--card-foreground);
-	--color-popover: var(--popover);
-	--color-popover-foreground: var(--popover-foreground);
-	--color-primary: var(--primary);
-	--color-primary-foreground: var(--primary-foreground);
-	--color-secondary: var(--secondary);
-	--color-secondary-foreground: var(--secondary-foreground);
-	--color-muted: var(--muted);
-	--color-muted-foreground: var(--muted-foreground);
-	--color-accent: var(--accent);
-	--color-accent-foreground: var(--accent-foreground);
-	--color-destructive: var(--destructive);
-	--color-border: var(--border);
-	--color-input: var(--input);
-	--color-ring: var(--ring);
-	--color-chart-1: var(--chart-1);
-	--color-chart-2: var(--chart-2);
-	--color-chart-3: var(--chart-3);
-	--color-chart-4: var(--chart-4);
-	--color-chart-5: var(--chart-5);
-	--color-sidebar: var(--sidebar);
-	--color-sidebar-foreground: var(--sidebar-foreground);
-	--color-sidebar-primary: var(--sidebar-primary);
-	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-	--color-sidebar-accent: var(--sidebar-accent);
-	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-	--color-sidebar-border: var(--sidebar-border);
-	--color-sidebar-ring: var(--sidebar-ring);
+.progress-bar-fill {
+    height: 12px;
+    background: linear-gradient(90deg, #ff0055, #ff4081);
+    border-radius: 7px;
+    transition: width 1s ease-in-out;
+    box-shadow: 0 0 10px rgba(255, 0, 85, 0.4);
 }
 
-.dark {
-	--background: oklch(0.145 0 0);
-	--foreground: oklch(0.985 0 0);
-	--card: oklch(0.205 0 0);
-	--card-foreground: oklch(0.985 0 0);
-	--popover: oklch(0.205 0 0);
-	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.922 0 0);
-	--primary-foreground: oklch(0.205 0 0);
-	--secondary: oklch(0.269 0 0);
-	--secondary-foreground: oklch(0.985 0 0);
-	--muted: oklch(0.269 0 0);
-	--muted-foreground: oklch(0.708 0 0);
-	--accent: oklch(0.269 0 0);
-	--accent-foreground: oklch(0.985 0 0);
-	--destructive: oklch(0.704 0.191 22.216);
-	--border: oklch(1 0 0 / 10%);
-	--input: oklch(1 0 0 / 15%);
-	--ring: oklch(0.556 0 0);
-	--chart-1: oklch(0.488 0.243 264.376);
-	--chart-2: oklch(0.696 0.17 162.48);
-	--chart-3: oklch(0.769 0.188 70.08);
-	--chart-4: oklch(0.627 0.265 303.9);
-	--chart-5: oklch(0.645 0.246 16.439);
-	--sidebar: oklch(0.205 0 0);
-	--sidebar-foreground: oklch(0.985 0 0);
-	--sidebar-primary: oklch(0.488 0.243 264.376);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.269 0 0);
-	--sidebar-accent-foreground: oklch(0.985 0 0);
-	--sidebar-border: oklch(1 0 0 / 10%);
-	--sidebar-ring: oklch(0.556 0 0);
+.progress-bar-sparkle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.4);
+    filter: blur(4px);
+    transform: skewX(-20deg);
+    animation: sparkle-animation 2.5s infinite linear;
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-	}
-  body {
-    @apply bg-background text-foreground;
-	}
+@keyframes sparkle-animation {
+    0% { left: -10%; }
+    100% { left: 110%; }
 }
 
-.login-panel {
-  display: none;
+.progress-label {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
 }
 
-.login-panel.visible {
-  display: block;
+.countdown-section {
+    margin-bottom: 24px;
 }
 
-.logged-in-menu {
-  display: none;
+.countdown-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 2px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
-.logged-in-menu.visible {
-  display: block;
+.countdown-part {
+    display: flex;
+    flex-direction: column;
 }
 
-@media (min-width: 600px) {
-  [data-state="open"][data-side="bottom"] {
-    width: calc(100vh * 9 / 16) !important;
-    max-width: 100% !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    bottom: 0 !important;
-  }
+.countdown-label-small {
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
 }
 
-@media (min-width: 600px) {
-  [data-state="open"][data-side="bottom"] {
-    width: calc(100vh * 9 / 16) !important;
-    max-width: 100% !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    bottom: 0 !important;
-  }
+.premiere-date-label {
+    margin-top: 16px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.countdown-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 16px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.stat-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+}
+
+.cta-section {
+    margin-top: 20px;
+}
+
+.cta-button {
+    background: linear-gradient(135deg, #ff0055, #ff4081);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(255, 0, 85, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 10px 30px rgba(255, 0, 85, 0.5);
+}
+
+.shiny-tip-button {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.shiny-tip-button svg {
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+    stroke: none;
+}
+
+.shiny-tip-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+    transform: rotate(30deg);
+    animation: shiny-effect 3s infinite linear;
+}
+
+@keyframes shiny-effect {
+    0% {
+        transform: rotate(30deg) translateX(-150%);
+    }
+    100% {
+        transform: rotate(30deg) translateX(150%);
+    }
 }
