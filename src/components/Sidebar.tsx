@@ -1,20 +1,23 @@
-"use client";
-
 import React from 'react';
-import { Heart, MessageCircle, Share } from 'lucide-react';
+import { Heart, MessageCircle, Share2, UserCircle } from 'lucide-react';
 
 export default function Sidebar() {
   return (
-    <aside className="absolute right-2 bottom-20 z-10 flex flex-col items-center gap-4">
+    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex flex-col items-center space-y-4 z-10">
       <button className="flex flex-col items-center text-white">
-        <Heart size={28} className="sm:h-8 sm:w-8" />
+        <UserCircle size={40} />
       </button>
       <button className="flex flex-col items-center text-white">
-        <MessageCircle size={28} className="sm:h-8 sm:w-8" />
+        <Heart size={40} />
+        <span className="text-xs">0</span>
       </button>
       <button className="flex flex-col items-center text-white">
-        <Share size={28} className="sm:h-8 sm:w-8" />
+        <MessageCircle size={40} />
+        <span className="text-xs">0</span>
       </button>
-    </aside>
+      <button className="flex flex-col items-center text-white">
+        <Share2 size={40} />
+      </button>
+    </div>
   );
 }
