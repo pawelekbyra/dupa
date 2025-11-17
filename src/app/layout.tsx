@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import "swiper/css";
+import "swiper/css/pagination";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,6 +21,7 @@ export const metadata: Metadata = {
 
 import AuthProvider from "@/components/AuthProvider";
 import AppLayout from "@/components/AppLayout";
+import { Providers } from "./providers";
 
 export default function RootLayout({
   children,
@@ -30,9 +33,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          <AppLayout>{children}</AppLayout>
-        </AuthProvider>
+        <Providers>
+          <AuthProvider>
+            <AppLayout>{children}</AppLayout>
+          </AuthProvider>
+        </Providers>
       </body>
     </html>
   );

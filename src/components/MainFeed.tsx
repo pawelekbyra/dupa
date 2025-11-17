@@ -1,26 +1,35 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import PostItem from "./PostItem";
-import { getPosts } from "@/app/actions/posts";
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Mousewheel, Pagination } from 'swiper/modules';
+import PostItem from './PostItem';
+import { Box } from '@chakra-ui/react';
 
-export default function MainFeed() {
-  const [slides, setSlides] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const { posts } = await getPosts({});
-      setSlides(posts);
-    };
-
-    fetchPosts();
-  }, []);
-
+const MainFeed = () => {
   return (
-    <div className="h-full w-full overflow-y-scroll snap-y snap-mandatory">
-      {slides.map((slide) => (
-        <PostItem key={slide.id} slide={slide} />
-      ))}
-    </div>
+    <Box height="100%" width="100%">
+      <Swiper
+        direction={'vertical'}
+        pagination={{
+          clickable: true,
+        }}
+        mousewheel={true}
+        modules={[Mousewheel, Pagination]}
+        style={{ height: '100%', width: '100%' }}
+      >
+        <SwiperSlide>
+          <PostItem />
+        </SwiperSlide>
+        <SwiperSlide>
+          <PostItem />
+        </SwiperSlide>
+        <SwiperSlide>
+          <PostItem />
+        </SwiperSlide>
+      </Swiper>
+    </Box>
   );
-}
+};
+
+export default MainFeed;

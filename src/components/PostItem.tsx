@@ -1,33 +1,28 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef } from "react";
-import { useInView } from "framer-motion";
-import { useStore } from "@/lib/store";
-import BottomBar from "./BottomBar";
-import Sidebar from "./Sidebar";
+import { Box } from '@chakra-ui/react';
+import React from 'react';
+import Sidebar from './Sidebar';
+import BottomBar from './BottomBar';
 
-export default function PostItem({ slide }: { slide: any }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { amount: 0.8 });
-  const setCurrentPost = useStore((state) => state.setCurrentPost);
-
-  useEffect(() => {
-    if (isInView) {
-      setCurrentPost(slide);
-    }
-  }, [isInView, slide, setCurrentPost]);
-
+const PostItem = () => {
   return (
-    <section ref={ref} className="h-screen flex-shrink-0 snap-start relative">
-      <video
-        className="player h-full w-full object-cover"
-        src={slide.mp4Url}
+    <Box position="relative" width="100%" height="100%" bg="black">
+      {/* Video player would go here */}
+      <Box as="video"
+        width="100%"
+        height="100%"
+        objectFit="cover"
+        src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" // mock video
         autoPlay
         muted
         loop
       />
-      <BottomBar />
+
       <Sidebar />
-    </section>
+      <BottomBar />
+    </Box>
   );
-}
+};
+
+export default PostItem;
