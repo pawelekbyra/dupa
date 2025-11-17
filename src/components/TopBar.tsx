@@ -15,7 +15,7 @@ export default function TopBar() {
       <div className="flex w-1/3 justify-start">
         <Popover.Root>
           <Popover.Trigger asChild>
-            <button>
+            <button className="rounded-full p-2 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600">
               <Menu size={24} />
             </button>
           </Popover.Trigger>
@@ -41,7 +41,7 @@ export default function TopBar() {
       {/* Center Section */}
       <div className="flex w-1/3 justify-center">
         <button
-          className="text-base font-semibold sm:text-lg text-center"
+          className="rounded px-4 py-2 text-base font-semibold hover:bg-gray-800 sm:text-lg text-center"
           onClick={() => setActiveModal('login')}
         >
           Nie masz psychy sie zalogowac
@@ -50,7 +50,7 @@ export default function TopBar() {
 
       {/* Right Section */}
       <div className="flex w-1/3 justify-end">
-        <button className="relative">
+        <button className="relative rounded-full p-2 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600">
           <Bell size={24} />
           <div className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></div>
         </button>
