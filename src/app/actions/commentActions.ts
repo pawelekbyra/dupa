@@ -4,7 +4,7 @@ import { db } from '@/lib/db';
 import { comments, users } from '@/lib/models/schema';
 import { Comment } from '@/lib/types';
 import { and, eq, isNull } from 'drizzle-orm';
-import { auth } from '@/lib/auth';
+// import { auth } from '@/lib/auth';
 
 type CommentWithReplies = Comment & { user: { id: string; name: string; avatarUrl: string } };
 
@@ -29,6 +29,8 @@ export const getComments = async (postId: string): Promise<CommentWithReplies[]>
 };
 
 export const addComment = async (formData: FormData) => {
+  return { success: false, error: 'Commenting is temporarily disabled.' };
+  /*
   try {
     const session = await auth();
     if (!session.user?.id) {
@@ -53,4 +55,5 @@ export const addComment = async (formData: FormData) => {
   } catch (error) {
     return { success: false, error: 'Unauthorized: You must be logged in to comment.' };
   }
+  */
 };

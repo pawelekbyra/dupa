@@ -1,33 +1,37 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { useInView } from "framer-motion";
-import { useStore } from "@/lib/store";
-import BottomBar from "./BottomBar";
-import Sidebar from "./Sidebar";
+import React, { useRef, useState } from 'react';
 
-export default function PostItem({ slide }: { slide: any }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { amount: 0.8 });
-  const setCurrentPost = useStore((state) => state.setCurrentPost);
+const PostItem = ({ post }) => {
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  useEffect(() => {
-    if (isInView) {
-      setCurrentPost(slide);
+  const handleVideoPress = () => {
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
     }
-  }, [isInView, slide, setCurrentPost]);
+  };
 
   return (
-    <section ref={ref} className="h-screen flex-shrink-0 snap-start relative">
-      <video
-        className="player h-full w-full object-cover"
-        src={slide.mp4Url}
-        autoPlay
-        muted
-        loop
-      />
-      <BottomBar />
-      <Sidebar />
-    </section>
+    <div className="webyx-section" style={{ display: 'block' }}>
+      <div className="tiktok-symulacja">
+        <video
+          ref={videoRef}
+          src={post.videoUrl}
+          loop
+          onClick={handleVideoPress}
+          className="player"
+        />
+        <div className="pause-overlay" style={{ opacity: isPlaying ? 0 : 1 }}>
+          {/* Pause Icon */}
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+export default PostItem;

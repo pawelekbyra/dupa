@@ -1,26 +1,39 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import PostItem from "./PostItem";
-import { getPosts } from "@/app/actions/posts";
+import React, { useState } from 'react';
+import PostItem from './PostItem';
 
-export default function MainFeed() {
-  const [slides, setSlides] = useState<any[]>([]);
+const mockPosts = [
+  {
+    id: 1,
+    author: '@author1',
+    title: 'Post 1',
+    description: 'Description for post 1',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    likes: 123,
+    comments: 45,
+  },
+  {
+    id: 2,
+    author: '@author2',
+    title: 'Post 2',
+    description: 'Description for post 2',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    likes: 678,
+    comments: 90,
+  },
+];
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const { posts } = await getPosts({});
-      setSlides(posts);
-    };
-
-    fetchPosts();
-  }, []);
+const MainFeed = () => {
+  const [posts, setPosts] = useState(mockPosts);
 
   return (
-    <div className="h-full w-full overflow-y-scroll snap-y snap-mandatory">
-      {slides.map((slide) => (
-        <PostItem key={slide.id} slide={slide} />
+    <div className="main-feed" style={{ display: 'block' }}>
+      {posts.map((post) => (
+        <PostItem key={post.id} post={post} />
       ))}
     </div>
   );
-}
+};
+
+export default MainFeed;
