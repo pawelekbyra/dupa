@@ -21,9 +21,9 @@ type AppFrameProps = {
 
 const AppFrame = ({ slideData }: AppFrameProps) => {
   return (
-    <div id="app-frame" className="relative w-full h-full overflow-hidden z-50">
+    <div id="app-frame" className="relative w-full h-full overflow-hidden z-50 bg-black">
       <TopBar />
-      <div id="webyx-container" className="fixed top-0 left-0 w-full h-full opacity-100 transition-opacity duration-500 ease-linear overflow-hidden">
+      <div id="webyx-container" className="fixed top-0 left-0 w-full h-full">
         <div className="relative w-full h-full">
           <div className="w-full h-full overflow-hidden relative">
             <div className="relative w-full h-full overflow-hidden bg-black text-white">

@@ -14,7 +14,7 @@ const TopBar = () => {
     <>
       <div className={clsx(
         "topbar",
-        "absolute top-0 left-0 w-full h-[var(--topbar-height)] flex justify-center items-center bg-primary text-text-primary z-50"
+        "absolute top-0 left-0 w-full h-[var(--topbar-height)] flex justify-center items-center bg-transparent text-text-primary z-50 text-shadow"
       )}>
         <button
           className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center"

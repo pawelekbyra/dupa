@@ -19,8 +19,19 @@ const config: Config = {
         'text-secondary': '#a0a0a0',
         'border-color': '#3a3a3c',
       },
+      textShadow: {
+        DEFAULT: '0 1px 5px rgba(0, 0, 0, 0.7)',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    function({ addUtilities }) {
+      addUtilities({
+        '.text-shadow': {
+          textShadow: '0 1px 5px rgba(0, 0, 0, 0.7)',
+        },
+      })
+    }
+  ],
 }
 export default config

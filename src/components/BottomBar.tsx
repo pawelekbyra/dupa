@@ -25,14 +25,14 @@ const BottomBar = ({
       </div>
       <div className="flex flex-col min-w-0">
         <div className="flex items-center gap-2 w-full overflow-hidden">
-          <strong className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis min-w-0">
+          <strong className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis min-w-0 text-shadow">
             {authorName}
           </strong>
-          <span className="text-base font-normal leading-tight whitespace-nowrap overflow-hidden text-ellipsis min-w-0">
+          <span className="text-base font-normal leading-tight whitespace-nowrap overflow-hidden text-ellipsis min-w-0 text-shadow">
             {slideTitle}
           </span>
         </div>
-        <p className="text-sm leading-snug mt-1 overflow-hidden text-ellipsis line-clamp-2 whitespace-normal">
+        <p className="text-sm leading-snug mt-1 overflow-hidden text-ellipsis line-clamp-2 whitespace-normal text-shadow">
           {slideDescription}
         </p>
       </div>
