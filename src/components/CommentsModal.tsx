@@ -1,94 +1,40 @@
-import React from 'react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { useEffect } from 'react';
-import { addComment, getComments } from '@/app/actions/commentActions';
-import { useCommentsStore } from '@/lib/store';
-import CommentItem from './CommentItem';
+type CommentsModalProps = {
+  isVisible: boolean;
+  onClose: () => void;
+};
 
-const formSchema = z.object({
-  comment: z.string().min(1, 'Comment cannot be empty'),
-});
-
-interface CommentsModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  slideId: string;
-}
-
-const CommentsModal: React.FC<CommentsModalProps> = ({ open, onOpenChange, slideId }) => {
-  const { comments, setComments } = useCommentsStore();
-
-  const fetchComments = () => {
-    getComments(slideId).then(setComments);
-  };
-
-  useEffect(() => {
-    if (open) {
-      fetchComments();
-    }
-  }, [open, slideId, setComments]);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      comment: '',
-    },
-  });
-
-  const { replyingTo, setReplyingTo } = useCommentsStore();
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const formData = new FormData();
-    formData.append('comment', values.comment);
-    formData.append('slideId', slideId);
-    if (replyingTo) {
-      formData.append('parentId', replyingTo);
-    }
-
-    const result = await addComment(formData);
-    if (result.success) {
-      form.reset();
-      setReplyingTo(null);
-      fetchComments(); // Refresh comments list
-    }
-  };
-
+const CommentsModal = ({ isVisible, onClose }: CommentsModalProps) => {
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom">
-        <SheetHeader>
-          <SheetTitle>Comments</SheetTitle>
-        </SheetHeader>
-        <div className="py-4 space-y-4">
-          {comments.map((comment) => (
-            <CommentItem key={comment.id} comment={comment} />
-          ))}
+    <div
+      id="fastcomments-modal-container"
+      className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-end justify-center z-[10200] transition-opacity duration-300 ease-in-out ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
+      role="dialog"
+      aria-modal="true"
+      aria-hidden={!isVisible}
+    >
+      <div
+        className={`bg-[#1c1c1e] w-full max-w-full rounded-t-2xl h-[60vh] max-h-[85vh] flex flex-col transform transition-transform duration-400 ease-in-out ${
+          isVisible ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <div className="flex items-center justify-between p-4 border-b border-white border-opacity-10">
+          <h2 id="commentsModalTitle" className="text-lg font-semibold text-white">
+            Komentarze
+          </h2>
+          <button
+            className="w-8 h-8 flex items-center justify-center bg-none border-none text-2xl cursor-pointer text-white opacity-70 hover:opacity-100"
+            onClick={onClose}
+          >
+            &times;
+          </button>
         </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="comment"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Add a comment..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Post</Button>
-          </form>
-        </Form>
-      </SheetContent>
-    </Sheet>
+        <div className="flex-grow overflow-y-auto p-4">
+          <div id="fastcomments-widget-0"></div>
+        </div>
+      </div>
+    </div>
   );
 };
 
