@@ -25,7 +25,7 @@ export default async function Home() {
     }));
   } else {
     // Użyj prawdziwej bazy danych
-    allPosts = await db.select({
+    const postsFromDb = await db.select({
       id: posts.id,
       userId: posts.userId,
       videoUrl: posts.videoUrl,
@@ -37,8 +37,14 @@ export default async function Home() {
       likesCount: posts.likesCount,
       commentsCount: posts.commentsCount,
       isPublished: posts.isPublished,
-      type: posts.type,
+      // Usunięto `type: posts.type`
     }).from(posts).orderBy(posts.createdAt);
+
+    // Ręcznie dodaj brakującą właściwość `type`, aby zachować zgodność z typem `Post`
+    allPosts = postsFromDb.map(post => ({
+      ...post,
+      type: 'public',
+    }));
   }
 
   return (
