@@ -2,13 +2,10 @@
 
 import { db } from '@/lib/db';
 import { comments, users } from '@/lib/models/schema';
-import { Comment } from '@/lib/types';
 import { and, eq, isNull } from 'drizzle-orm';
 import { auth } from '@/lib/auth';
 
-type CommentWithReplies = Comment & { user: { id: string; name: string; avatarUrl: string } };
-
-export const getComments = async (postId: string): Promise<CommentWithReplies[]> => {
+export const getComments = async (postId: string) => {
   const topLevelComments = await db
     .select({
       id: comments.id,

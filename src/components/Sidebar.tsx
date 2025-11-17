@@ -16,15 +16,12 @@ export default function Sidebar({ onCommentClick }: { onCommentClick: () => void
       </div>
       <button className="flex flex-col items-center text-white">
         <Heart size={32} />
-        <span className="text-xs">Like</span>
       </button>
       <button className="flex flex-col items-center text-white" onClick={onCommentClick}>
         <MessageCircle size={32} />
-        <span className="text-xs">Comment</span>
       </button>
       <button className="flex flex-col items-center text-white">
         <Share2 size={32} />
-        <span className="text-xs">Share</span>
       </button>
     </aside>
   );

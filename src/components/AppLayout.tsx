@@ -13,9 +13,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <div id="webyx-container" className="relative h-screen w-screen overflow-hidden bg-black">
       <div className="tiktok-symulacja h-full w-full">
         <TopBar />
-        <main className="h-full w-full">{children}</main>
-        <Sidebar onCommentClick={() => setCommentsOpen(true)} />
-        <BottomBar />
+        <main className="h-full w-full pt-16">{children}</main>
         <CommentsModal isOpen={isCommentsOpen} onOpenChange={setCommentsOpen} />
       </div>
     </div>
