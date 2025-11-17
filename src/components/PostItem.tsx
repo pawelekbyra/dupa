@@ -1,33 +1,21 @@
-"use client";
+import Sidebar from './Sidebar';
 
-import React, { useEffect, useRef } from "react";
-import { useInView } from "framer-motion";
-import { useStore } from "@/lib/store";
-import BottomBar from "./BottomBar";
-import Sidebar from "./Sidebar";
-
-export default function PostItem({ slide }: { slide: any }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { amount: 0.8 });
-  const setCurrentPost = useStore((state) => state.setCurrentPost);
-
-  useEffect(() => {
-    if (isInView) {
-      setCurrentPost(slide);
-    }
-  }, [isInView, slide, setCurrentPost]);
-
+const PostItem = ({ number }: { number: number }) => {
   return (
-    <section ref={ref} className="h-screen flex-shrink-0 snap-start relative">
-      <video
-        className="player h-full w-full object-cover"
-        src={slide.mp4Url}
-        autoPlay
-        muted
-        loop
-      />
-      <BottomBar />
+    <div className="swiper-slide h-screen flex items-center justify-center text-4xl relative">
+      <div className="absolute inset-0 bg-gray-800">
+        <video
+          className="w-full h-full object-cover"
+          src={`/video${number}.mp4`}
+          autoPlay
+          loop
+          muted
+        />
+      </div>
       <Sidebar />
-    </section>
+      <div className="z-10">Slide {number}</div>
+    </div>
   );
-}
+};
+
+export default PostItem;
