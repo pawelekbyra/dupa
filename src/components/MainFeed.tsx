@@ -1,26 +1,30 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import PostItem from "./PostItem";
-import { getPosts } from "@/app/actions/posts";
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+import { slidesData } from '@/lib/data';
+import PostItem from '@/components/PostItem';
 
-export default function MainFeed() {
-  const [slides, setSlides] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const { posts } = await getPosts({});
-      setSlides(posts);
-    };
-
-    fetchPosts();
-  }, []);
-
+const MainFeed = () => {
   return (
-    <div className="h-full w-full overflow-y-scroll snap-y snap-mandatory">
-      {slides.map((slide) => (
-        <PostItem key={slide.id} slide={slide} />
+    <Swiper
+      direction={'vertical'}
+      pagination={{
+        clickable: true,
+      }}
+      modules={[Pagination]}
+      className="tiktok-symulacja"
+    >
+      {slidesData.map((slide) => (
+        <SwiperSlide key={slide.id}>
+          <PostItem slide={slide} />
+        </SwiperSlide>
       ))}
-    </div>
+    </Swiper>
   );
-}
+};
+
+export default MainFeed;

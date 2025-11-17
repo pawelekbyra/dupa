@@ -1,5 +1,5 @@
-import MainFeed from "@/components/MainFeed";
+import AppLayout from '@/components/AppLayout';
 
-export default function Home() {
-  return <MainFeed />;
+export default function HomePage() {
+  return <AppLayout />;
 }
