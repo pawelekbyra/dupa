@@ -1,23 +1,33 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import TopBar from './TopBar';
-import BottomBar from './BottomBar';
-import Sidebar from './Sidebar';
-import CommentsModal from './CommentsModal';
+import LoginPanel from './LoginPanel';
+import AccountModal from './AccountModal';
+import { useStore } from '@/lib/store';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const [isCommentsOpen, setCommentsOpen] = useState(false);
+  const { activeModal, setActiveModal } = useStore();
 
   return (
-    <div id="webyx-container" className="relative h-screen w-screen overflow-hidden bg-black">
-      <div className="tiktok-symulacja h-full w-full">
-        <TopBar />
-        <main className="h-full w-full">{children}</main>
-        <Sidebar onCommentClick={() => setCommentsOpen(true)} />
-        <BottomBar />
-        <CommentsModal isOpen={isCommentsOpen} onOpenChange={setCommentsOpen} />
-      </div>
+    <div id="webyx-container" className="relative flex h-screen w-screen flex-col overflow-hidden bg-black">
+      {/* TopBar będzie teraz częścią normalnego przepływu */}
+      <TopBar />
+
+      {/* Main content zajmie pozostałą przestrzeń */}
+      <main className="relative flex-grow">
+        {children}
+      </main>
+
+      <LoginPanel
+        open={activeModal === 'login'}
+        onOpenChange={(open) => !open && setActiveModal(null)}
+      />
+
+      <AccountModal
+        open={activeModal === 'account'}
+        onOpenChange={(open) => !open && setActiveModal(null)}
+      />
     </div>
   );
 }
