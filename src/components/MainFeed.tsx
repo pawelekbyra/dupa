@@ -1,9 +1,6 @@
 "use client";
 
 import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import PostItem from './PostItem';
 import Sidebar from './Sidebar';
 import BottomBar from './BottomBar';
 import { Post } from '@/lib/types';
@@ -14,17 +11,14 @@ interface MainFeedProps {
 
 export default function MainFeed({ posts }: MainFeedProps) {
   return (
-    <Swiper
-      direction="vertical"
-      className="h-full"
-    >
-      {Array.isArray(posts) && posts.map((post) => (
-        <SwiperSlide key={post.id} className="relative">
-          <PostItem post={post} />
-          <Sidebar />
-          <BottomBar />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <div className="relative h-full w-full snap-start bg-gray-800">
+      <div className="h-full w-full flex items-center justify-center">
+        <h1 className="text-white text-2xl">
+          Główny feed wideo
+        </h1>
+      </div>
+      <Sidebar />
+      <BottomBar />
+    </div>
   );
 }

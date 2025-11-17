@@ -2,32 +2,14 @@
 
 import React from 'react';
 import TopBar from './TopBar';
-import LoginPanel from './LoginPanel';
-import AccountModal from './AccountModal';
-import { useStore } from '@/lib/store';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const { activeModal, setActiveModal } = useStore();
-
   return (
-    <div id="webyx-container" className="relative flex h-screen w-screen flex-col overflow-hidden bg-black">
-      {/* TopBar będzie teraz częścią normalnego przepływu */}
+    <div className="flex h-screen flex-col bg-black">
       <TopBar />
-
-      {/* Main content zajmie pozostałą przestrzeń */}
-      <main className="relative flex-grow">
+      <main className="flex-1 overflow-y-auto">
         {children}
       </main>
-
-      <LoginPanel
-        open={activeModal === 'login'}
-        onOpenChange={(open) => !open && setActiveModal(null)}
-      />
-
-      <AccountModal
-        open={activeModal === 'account'}
-        onOpenChange={(open) => !open && setActiveModal(null)}
-      />
     </div>
   );
 }
