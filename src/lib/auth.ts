@@ -3,13 +3,18 @@ import { jwtVerify } from 'jose';
 import { db } from '@/lib/db';
 import { User } from './db.interfaces';
 
-const JWT_SECRET_STRING = process.env.MOCK_API === 'true'
-    ? 'your-super-secret-jwt-token-for-mock-api'
-    : process.env.JWT_SECRET;
+let JWT_SECRET_STRING = process.env.JWT_SECRET;
 
 if (!JWT_SECRET_STRING) {
-    throw new Error("JWT_SECRET environment variable is not set");
+    JWT_SECRET_STRING = 'your-super-secret-jwt-token-for-development';
+    if (process.env.NODE_ENV === 'production') {
+        console.warn(
+            '\x1b[31m%s\x1b[0m', // Red color
+            'WARNING: JWT_SECRET is not set in a production environment! Using a default, insecure secret. Please set a strong, unique secret in your environment variables.'
+        );
+    }
 }
+
 const JWT_SECRET = new TextEncoder().encode(JWT_SECRET_STRING);
 const COOKIE_NAME = 'session';
 
