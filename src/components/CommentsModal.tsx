@@ -1,95 +1,34 @@
-import React from 'react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { useEffect } from 'react';
-import { addComment, getComments } from '@/app/actions/commentActions';
-import { useCommentsStore } from '@/lib/store';
-import CommentItem from './CommentItem';
+"use client";
 
-const formSchema = z.object({
-  comment: z.string().min(1, 'Comment cannot be empty'),
-});
+import React from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+import CommentItem from './CommentItem';
+import { X } from 'lucide-react';
 
 interface CommentsModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  slideId: string;
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
 }
 
-const CommentsModal: React.FC<CommentsModalProps> = ({ open, onOpenChange, slideId }) => {
-  const { comments, setComments } = useCommentsStore();
-
-  const fetchComments = () => {
-    getComments(slideId).then(setComments);
-  };
-
-  useEffect(() => {
-    if (open) {
-      fetchComments();
-    }
-  }, [open, slideId, setComments]);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      comment: '',
-    },
-  });
-
-  const { replyingTo, setReplyingTo } = useCommentsStore();
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const formData = new FormData();
-    formData.append('comment', values.comment);
-    formData.append('slideId', slideId);
-    if (replyingTo) {
-      formData.append('parentId', replyingTo);
-    }
-
-    const result = await addComment(formData);
-    if (result.success) {
-      form.reset();
-      setReplyingTo(null);
-      fetchComments(); // Refresh comments list
-    }
-  };
-
+export default function CommentsModal({ isOpen, onOpenChange }: CommentsModalProps) {
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom">
-        <SheetHeader>
-          <SheetTitle>Comments</SheetTitle>
-        </SheetHeader>
-        <div className="py-4 space-y-4">
-          {comments.map((comment) => (
-            <CommentItem key={comment.id} comment={comment} />
-          ))}
-        </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="comment"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Add a comment..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Post</Button>
-          </form>
-        </Form>
-      </SheetContent>
-    </Sheet>
+    <Dialog.Root open={isOpen} onOpenChange={onOpenChange}>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 z-40 bg-black/70" />
+        <Dialog.Content className="fixed bottom-0 left-0 z-50 h-[60vh] w-full rounded-t-2xl bg-[#1c1c1e] p-4 text-white">
+          <Dialog.Title className="text-center text-lg font-bold">Comments</Dialog.Title>
+          <div className="mt-4 space-y-4 overflow-y-auto h-[calc(60vh-100px)]">
+            <CommentItem />
+            <CommentItem />
+            <CommentItem />
+          </div>
+          <Dialog.Close asChild>
+            <button className="absolute top-4 right-4">
+              <X size={24} />
+            </button>
+          </Dialog.Close>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
-};
-
-export default CommentsModal;
+}

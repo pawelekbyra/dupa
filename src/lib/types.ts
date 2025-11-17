@@ -1,13 +1,3 @@
-export interface User {
-  id: string;
-  name: string;
-  avatarUrl: string;
-}
+import { posts } from './models/schema';
 
-export interface Comment {
-  id: string;
-  text: string;
-  user: User;
-  replies: Comment[];
-  createdAt: string;
-}
+export type Post = typeof posts.$inferSelect;

@@ -1,31 +1,16 @@
+"use client";
+
 import React from 'react';
-import { Comment } from '@/lib/types';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-interface CommentItemProps {
-  comment: Comment;
-}
-
-const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
+export default function CommentItem() {
   return (
-    <div className="flex items-start space-x-4">
-      <Avatar>
-        <AvatarImage src={comment.user.avatarUrl} alt={comment.user.name} />
-        <AvatarFallback>{comment.user.name.charAt(0)}</AvatarFallback>
-      </Avatar>
-      <div className="flex-1">
-        <p className="font-semibold">{comment.user.name}</p>
-        <p>{comment.text}</p>
-        {comment.replies && comment.replies.length > 0 && (
-          <div className="mt-4 space-y-4 pl-4 border-l-2">
-            {comment.replies.map((reply) => (
-              <CommentItem key={reply.id} comment={reply} />
-            ))}
-          </div>
-        )}
+    <div className="flex gap-4">
+      <img src="https://placehold.co/40x40" alt="Avatar" className="h-10 w-10 rounded-full" />
+      <div className="flex flex-col">
+        <p className="text-sm font-bold text-gray-400">@username</p>
+        <p className="text-base">This is a comment.</p>
+        <p className="text-xs text-gray-500">1h ago</p>
       </div>
     </div>
   );
-};
-
-export default CommentItem;
+}
