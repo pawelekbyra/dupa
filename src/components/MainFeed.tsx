@@ -1,26 +1,38 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import PostItem from "./PostItem";
-import { getPosts } from "@/app/actions/posts";
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Pagination } from "swiper/modules";
 
-export default function MainFeed() {
-  const [slides, setSlides] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const { posts } = await getPosts({});
-      setSlides(posts);
-    };
-
-    fetchPosts();
-  }, []);
-
+const MainFeed = () => {
   return (
-    <div className="h-full w-full overflow-y-scroll snap-y snap-mandatory">
-      {slides.map((slide) => (
-        <PostItem key={slide.id} slide={slide} />
-      ))}
-    </div>
+    <Swiper
+      direction={"vertical"}
+      pagination={{
+        clickable: true,
+      }}
+      modules={[Pagination]}
+      className="h-full"
+    >
+      <SwiperSlide>
+        <div className="h-full w-full bg-red-500 flex items-center justify-center">
+          <h1 className="text-white text-4xl">Slide 1</h1>
+        </div>
+      </SwiperSlide>
+      <SwiperSlide>
+        <div className="h-full w-full bg-blue-500 flex items-center justify-center">
+          <h1 className="text-white text-4xl">Slide 2</h1>
+        </div>
+      </SwiperSlide>
+      <SwiperSlide>
+        <div className="h-full w-full bg-green-500 flex items-center justify-center">
+          <h1 className="text-white text-4xl">Slide 3</h1>
+        </div>
+      </SwiperSlide>
+    </Swiper>
   );
-}
+};
+
+export default MainFeed;

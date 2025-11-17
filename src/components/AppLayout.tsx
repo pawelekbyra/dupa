@@ -1,15 +1,19 @@
-"use client";
+import React from "react";
+import TopBar from "./TopBar";
+import BottomBar from "./BottomBar";
+import Sidebar from "./Sidebar";
+import LoginModal from "./LoginModal";
 
-import React from 'react';
-import TopBar from './TopBar';
-
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="h-full w-full">
+    <div className="relative h-screen w-screen overflow-hidden bg-black">
       <TopBar />
-      <main className="h-full w-full">
-        {children}
-      </main>
+      <main className="h-full w-full">{children}</main>
+      <Sidebar />
+      <BottomBar />
+      <LoginModal />
     </div>
   );
-}
+};
+
+export default AppLayout;
