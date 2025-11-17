@@ -1,15 +1,23 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import TopBar from './TopBar';
+import BottomBar from './BottomBar';
+import Sidebar from './Sidebar';
+import CommentsModal from './CommentsModal';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
+  const [isCommentsOpen, setCommentsOpen] = useState(false);
+
   return (
-    <div className="h-full w-full">
-      <TopBar />
-      <main className="h-full w-full">
-        {children}
-      </main>
+    <div id="webyx-container" className="relative h-screen w-screen overflow-hidden bg-black">
+      <div className="tiktok-symulacja h-full w-full">
+        <TopBar />
+        <main className="h-full w-full">{children}</main>
+        <Sidebar onCommentClick={() => setCommentsOpen(true)} />
+        <BottomBar />
+        <CommentsModal isOpen={isCommentsOpen} onOpenChange={setCommentsOpen} />
+      </div>
     </div>
   );
 }

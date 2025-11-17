@@ -1,26 +1,26 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import PostItem from "./PostItem";
-import { getPosts } from "@/app/actions/posts";
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import PostItem from './PostItem';
+import { Post } from '@/lib/types';
 
-export default function MainFeed() {
-  const [slides, setSlides] = useState<any[]>([]);
+interface MainFeedProps {
+  posts: Post[];
+}
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const { posts } = await getPosts({});
-      setSlides(posts);
-    };
-
-    fetchPosts();
-  }, []);
-
+export default function MainFeed({ posts }: MainFeedProps) {
   return (
-    <div className="h-full w-full overflow-y-scroll snap-y snap-mandatory">
-      {slides.map((slide) => (
-        <PostItem key={slide.id} slide={slide} />
+    <Swiper
+      direction="vertical"
+      className="h-full"
+    >
+      {Array.isArray(posts) && posts.map((post) => (
+        <SwiperSlide key={post.id}>
+          <PostItem post={post} />
+        </SwiperSlide>
       ))}
-    </div>
+    </Swiper>
   );
 }
