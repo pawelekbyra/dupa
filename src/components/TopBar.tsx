@@ -15,7 +15,7 @@ export default function TopBar() {
       <div className="flex w-1/3 justify-start">
         <Popover.Root>
           <Popover.Trigger asChild>
-            <button>
+            <button className="bg-transparent hover:bg-gray-800/50">
               <Menu size={24} />
             </button>
           </Popover.Trigger>
@@ -50,7 +50,7 @@ export default function TopBar() {
 
       {/* Right Section */}
       <div className="flex w-1/3 justify-end">
-        <button className="relative">
+        <button className="relative bg-transparent hover:bg-gray-800/50">
           <Bell size={24} />
           <div className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></div>
         </button>
