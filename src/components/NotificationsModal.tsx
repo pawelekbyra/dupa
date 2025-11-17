@@ -2,16 +2,16 @@
 
 import React from 'react';
 
-const CommentsModal = ({ onClose }: { onClose: () => void }) => {
+const NotificationsModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="modal-overlay visible" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>Komentarze</h2>
-        <p>Tutaj będą wyświetlane komentarze.</p>
+        <h2>Powiadomienia</h2>
+        <p>Tutaj będą wyświetlane powiadomienia.</p>
         <button onClick={onClose}>Zamknij</button>
       </div>
     </div>
   );
 };
 
-export default CommentsModal;
+export default NotificationsModal;
