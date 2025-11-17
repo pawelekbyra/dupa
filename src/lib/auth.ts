@@ -3,10 +3,14 @@ import { jwtVerify } from 'jose';
 import { db } from '@/lib/db';
 import { User } from './db.interfaces';
 
-if (!process.env.JWT_SECRET) {
+const JWT_SECRET_STRING = process.env.MOCK_API === 'true'
+    ? 'your-super-secret-jwt-token-for-mock-api'
+    : process.env.JWT_SECRET;
+
+if (!JWT_SECRET_STRING) {
     throw new Error("JWT_SECRET environment variable is not set");
 }
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
+const JWT_SECRET = new TextEncoder().encode(JWT_SECRET_STRING);
 const COOKIE_NAME = 'session';
 
 export interface AuthPayload {
