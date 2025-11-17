@@ -1,94 +1,76 @@
+'use client';
+
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  Box,
+  VStack,
+  Text,
+  Avatar,
+  Input,
+  IconButton,
+} from '@chakra-ui/react';
+import { Send } from 'lucide-react';
 import React from 'react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { useEffect } from 'react';
-import { addComment, getComments } from '@/app/actions/commentActions';
-import { useCommentsStore } from '@/lib/store';
-import CommentItem from './CommentItem';
+import { useStore } from '@/lib/store';
 
-const formSchema = z.object({
-  comment: z.string().min(1, 'Comment cannot be empty'),
-});
+const MockComment = ({ name, text }: { name: string; text: string }) => (
+  <Box display="flex" alignItems="start" gap={3} mb={4}>
+    <Avatar name={name} size="sm" />
+    <Box>
+      <Text fontWeight="bold" fontSize="sm">
+        {name}
+      </Text>
+      <Text fontSize="sm">{text}</Text>
+    </Box>
+  </Box>
+);
 
-interface CommentsModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  slideId: string;
-}
-
-const CommentsModal: React.FC<CommentsModalProps> = ({ open, onOpenChange, slideId }) => {
-  const { comments, setComments } = useCommentsStore();
-
-  const fetchComments = () => {
-    getComments(slideId).then(setComments);
-  };
-
-  useEffect(() => {
-    if (open) {
-      fetchComments();
-    }
-  }, [open, slideId, setComments]);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      comment: '',
-    },
-  });
-
-  const { replyingTo, setReplyingTo } = useCommentsStore();
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const formData = new FormData();
-    formData.append('comment', values.comment);
-    formData.append('slideId', slideId);
-    if (replyingTo) {
-      formData.append('parentId', replyingTo);
-    }
-
-    const result = await addComment(formData);
-    if (result.success) {
-      form.reset();
-      setReplyingTo(null);
-      fetchComments(); // Refresh comments list
-    }
-  };
+const CommentsModal = () => {
+  const { activeModal, setActiveModal } = useStore();
+  const isOpen = activeModal === 'comments';
+  const onClose = () => setActiveModal(null);
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom">
-        <SheetHeader>
-          <SheetTitle>Comments</SheetTitle>
-        </SheetHeader>
-        <div className="py-4 space-y-4">
-          {comments.map((comment) => (
-            <CommentItem key={comment.id} comment={comment} />
-          ))}
-        </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="comment"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Add a comment..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+    <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInBottom" size="full">
+      <ModalOverlay />
+      <ModalContent
+        bg="gray.800"
+        color="white"
+        mt="auto"
+        mb="0"
+        borderTopRadius="20px"
+        maxH="60vh"
+      >
+        <ModalCloseButton />
+        <ModalHeader textAlign="center" borderBottomWidth="1px" borderColor="gray.700">
+          Comments
+        </ModalHeader>
+
+        <ModalBody>
+          <VStack spacing={4} align="stretch">
+            <MockComment name="John Doe" text="This is an amazing video!" />
+            <MockComment name="Jane Smith" text="I totally agree. Great content!" />
+            <MockComment name="Peter Jones" text="Wow, just wow. 🤯" />
+          </VStack>
+        </ModalBody>
+
+        <Box p={4} borderTopWidth="1px" borderColor="gray.700">
+          <Box display="flex" gap={2}>
+            <Input placeholder="Add a comment..." variant="filled" bg="gray.700" />
+            <IconButton
+              aria-label="Send comment"
+              icon={<Send />}
+              colorScheme="pink"
             />
-            <Button type="submit">Post</Button>
-          </form>
-        </Form>
-      </SheetContent>
-    </Sheet>
+          </Box>
+        </Box>
+      </ModalContent>
+    </Modal>
   );
 };
 

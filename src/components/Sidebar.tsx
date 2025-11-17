@@ -1,23 +1,92 @@
-"use client";
+'use client';
 
+import { Avatar, Box, IconButton, Text, VStack } from '@chakra-ui/react';
+import { Heart, MessageCircle, Send, Gift } from 'lucide-react';
 import React from 'react';
-import { Heart, MessageSquare, Share } from 'lucide-react';
+import { useStore } from '@/lib/store';
 
 const Sidebar = () => {
+  const { setActiveModal } = useStore();
+  // Mock data for counters
+  const likes = '1.2M';
+  const comments = '4.5K';
+
   return (
-    <aside className="absolute right-2 bottom-20 flex flex-col items-center gap-4 z-20">
-      <button className="flex flex-col items-center gap-1 text-white">
-        <Heart size={32} />
-        <span className="text-xs">0</span>
-      </button>
-      <button className="flex flex-col items-center gap-1 text-white">
-        <MessageSquare size={32} />
-        <span className="text-xs">0</span>
-      </button>
-      <button className="flex flex-col items-center gap-1 text-white">
-        <Share size={32} />
-      </button>
-    </aside>
+    <VStack
+      position="absolute"
+      top="50%"
+      right="10px"
+      transform="translateY(-50%)"
+      zIndex="docked"
+      spacing={4}
+      color="white"
+    >
+      <Box textAlign="center">
+        <Avatar
+          size="md"
+          name="Author Name"
+          src="https://bit.ly/dan-abramov" // mock avatar
+          mb={1}
+        />
+      </Box>
+
+      <Box textAlign="center">
+        <IconButton
+          aria-label="Like"
+          icon={<Heart size="32px" />}
+          variant="ghost"
+          colorScheme="whiteAlpha"
+          _hover={{ bg: 'whiteAlpha.300' }}
+          isRound
+        />
+        <Text fontSize="sm" fontWeight="bold">
+          {likes}
+        </Text>
+      </Box>
+
+      <Box textAlign="center">
+        <IconButton
+          aria-label="Comment"
+          icon={<MessageCircle size="32px" />}
+          variant="ghost"
+          colorScheme="whiteAlpha"
+          _hover={{ bg: 'whiteAlpha.300' }}
+          isRound
+          onClick={() => setActiveModal('comments')}
+        />
+        <Text fontSize="sm" fontWeight="bold">
+          {comments}
+        </Text>
+      </Box>
+
+      <Box textAlign="center">
+        <IconButton
+          aria-label="Share"
+          icon={<Send size="32px" />}
+          variant="ghost"
+          colorScheme="whiteAlpha"
+          _hover={{ bg: 'whiteAlpha.300' }}
+          isRound
+        />
+        <Text fontSize="sm" fontWeight="bold">
+          Share
+        </Text>
+      </Box>
+
+      <Box textAlign="center">
+        <IconButton
+          aria-label="Tip"
+          icon={<Gift size="32px" />}
+          variant="ghost"
+          colorScheme="whiteAlpha"
+          _hover={{ bg: 'whiteAlpha.300' }}
+          isRound
+        />
+        <Text fontSize="sm" fontWeight="bold">
+          Tip
+        </Text>
+      </Box>
+    </VStack>
   );
 };
 
