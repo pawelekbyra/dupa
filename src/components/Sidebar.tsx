@@ -1,23 +1,31 @@
-"use client";
-
 import React from 'react';
-import { Heart, MessageSquare, Share } from 'lucide-react';
 
 const Sidebar = () => {
   return (
-    <aside className="absolute right-2 bottom-20 flex flex-col items-center gap-4 z-20">
-      <button className="flex flex-col items-center gap-1 text-white">
-        <Heart size={32} />
-        <span className="text-xs">0</span>
+    <div className="sidebar">
+      <div className="profile">
+        <button className="profileButton">
+          <img src="https://i.pravatar.cc/100" alt="Profile" />
+        </button>
+        <div className="plus">+</div>
+      </div>
+      <button className="icon-button like-button">
+        {/* Heart SVG */}
+        <span className="icon-label">1.2M</span>
       </button>
-      <button className="flex flex-col items-center gap-1 text-white">
-        <MessageSquare size={32} />
-        <span className="text-xs">0</span>
+      <button className="icon-button comment-button">
+        {/* Comment SVG */}
+        <span className="icon-label">4.5K</span>
       </button>
-      <button className="flex flex-col items-center gap-1 text-white">
-        <Share size={32} />
+      <button className="icon-button tipButton">
+        {/* Tip SVG */}
+        <span className="icon-label">Tip</span>
       </button>
-    </aside>
+      <button className="icon-button share-button">
+        {/* Share SVG */}
+        <span className="icon-label">Share</span>
+      </button>
+    </div>
   );
 };
 
