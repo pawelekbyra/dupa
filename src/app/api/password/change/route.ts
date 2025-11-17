@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 export const dynamic = 'force-dynamic';
 import { db } from '@/lib/db';
 import { verifySession } from '@/lib/auth';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { SignJWT } from 'jose';
 
 if (!process.env.JWT_SECRET) {

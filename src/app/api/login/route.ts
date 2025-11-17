@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { SignJWT } from 'jose';
 import { cookies } from 'next/headers';
 import { db } from '@/lib/db';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 if (!process.env.JWT_SECRET) {
     throw new Error("JWT_SECRET environment variable is not set");
