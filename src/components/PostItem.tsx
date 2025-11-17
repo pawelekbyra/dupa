@@ -1,10 +1,9 @@
+
 "use client";
 
 import React, { useEffect, useRef } from "react";
 import { useInView } from "framer-motion";
 import { useStore } from "@/lib/store";
-import BottomBar from "./BottomBar";
-import Sidebar from "./Sidebar";
 
 export default function PostItem({ slide }: { slide: any }) {
   const ref = useRef(null);
@@ -26,8 +25,6 @@ export default function PostItem({ slide }: { slide: any }) {
         muted
         loop
       />
-      <BottomBar />
-      <Sidebar />
     </section>
   );
 }

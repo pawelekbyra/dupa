@@ -18,7 +18,6 @@ export const metadata: Metadata = {
 };
 
 import AuthProvider from "@/components/AuthProvider";
-import AppLayout from "@/components/AppLayout";
 
 export default function RootLayout({
   children,
@@ -30,9 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          <AppLayout>{children}</AppLayout>
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

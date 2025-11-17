@@ -1,5 +1,10 @@
-import MainFeed from "@/components/MainFeed";
+import AppLayout from '@/components/AppLayout';
+import MainFeed from '@/components/MainFeed';
 
 export default function Home() {
-  return <MainFeed />;
+  return (
+    <AppLayout>
+      <MainFeed />
+    </AppLayout>
+  );
 }
