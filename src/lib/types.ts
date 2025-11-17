@@ -1,13 +1,21 @@
-export interface User {
-  id: string;
-  name: string;
-  avatarUrl: string;
-}
-
+// src/lib/types.ts
 export interface Comment {
   id: string;
-  text: string;
-  user: User;
-  replies: Comment[];
-  createdAt: string;
+  author: string;
+  avatar: string;
+  content: string;
+  timestamp: string;
+  likes: number;
+  replies?: Comment[];
+}
+
+export interface Post {
+  id: string;
+  author: string;
+  authorAvatar: string;
+  videoUrl: string;
+  description: string;
+  likes: number;
+  comments: number;
+  shares: number;
 }

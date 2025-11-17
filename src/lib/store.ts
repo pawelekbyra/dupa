@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Comment } from './types';
+import { Comment, Post } from './types';
 
 interface CommentsState {
   comments: Comment[];
@@ -17,9 +17,9 @@ export const useCommentsStore = create<CommentsState>((set) => ({
 
 interface AppState {
   activeModal: string | null;
-  currentPost: any | null; // Można zdefiniować dokładniejszy typ
+  currentPost: Post | null; // Można zdefiniować dokładniejszy typ
   setActiveModal: (modal: string | null) => void;
-  setCurrentPost: (post: any | null) => void;
+  setCurrentPost: (post: Post | null) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
