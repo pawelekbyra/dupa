@@ -41,3 +41,6 @@ dev.log
 *.tsbuildinfo
 next-env.d.ts
 dev_server.log
+
+# temporary files
+temp_ref/
