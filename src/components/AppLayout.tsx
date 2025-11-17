@@ -1,15 +1,20 @@
-"use client";
+'use client';
 
 import React from 'react';
-import TopBar from './TopBar';
+import TopBar from '@/components/TopBar';
+import MainFeed from '@/components/MainFeed';
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+const AppLayout = () => {
   return (
-    <div className="h-full w-full">
-      <TopBar />
-      <main className="h-full w-full">
-        {children}
-      </main>
+    <div id="webyx-container">
+      <div id="app-frame">
+        <TopBar />
+        <main>
+          <MainFeed />
+        </main>
+      </div>
     </div>
   );
-}
+};
+
+export default AppLayout;
