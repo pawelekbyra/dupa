@@ -1,11 +1,19 @@
-"use client";
-
 import React from 'react';
 
 const TopBar = () => {
   return (
-    <div className="fixed top-0 left-0 right-0 z-10 flex items-center justify-center h-16 bg-black text-white">
-      <h1 className="text-lg font-bold">Ting Tong</h1>
+    <div className="topbar">
+      <button className="topbar-icon-btn hamburger-icon">
+        {/* Hamburger SVG */}
+      </button>
+      <div className="topbar-central-trigger">
+        <div className="central-text-wrapper with-arrow">
+          <span className="topbar-text">For You</span>
+        </div>
+      </div>
+      <button className="top-bar-icon-btn notification-bell">
+        {/* Bell SVG */}
+      </button>
     </div>
   );
 };
