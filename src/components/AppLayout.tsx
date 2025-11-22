@@ -5,6 +5,8 @@ import TopBar from './TopBar';
 import LoginPanel from './LoginPanel';
 import AccountModal from './AccountModal';
 import { useStore } from '@/lib/store';
+import Sidebar from './Sidebar';
+import BottomBar from './BottomBar';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { activeModal, setActiveModal } = useStore();
@@ -18,6 +20,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <main className="relative flex-grow">
         {children}
       </main>
+
+      <Sidebar />
+      <BottomBar />
 
       <LoginPanel
         open={activeModal === 'login'}
